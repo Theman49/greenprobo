@@ -133,9 +133,9 @@ export default function Home() {
 				<div className="sticky p-6">
 					<Navbar/>
 				</div>
-				<div id="home" className="absolute top-0 -z-10">
-					<div className="flex gap">
-						<div id="hero-container" className="p-6 justify-center flex flex-col gap-8">
+				<div id="home" className="absolute top-0 -z-10 w-full">
+					<div className="flex gap justify-between">
+						<div id="hero-container" className="p-6 justify-center flex flex-col gap-8 w-3/5">
 							<div className="flex flex-col gap-2">
 								<h1 className="text-3xl">Bersama Membangun <div className="relative inline">Probolinggo<span className="absolute top-[80%] -z-10 left-0 bg-green-200 h-2 w-full"></span></div> yang Lebih Bersih dan <span className="text-green-900 italic">Hijau</span></h1>
 								<p className="text-gray-500">Sampah Anda memiliki nilai yang bisa membantu lingkungan dan ekonomi lokal. Ayo simpan dan lihat bagaimana Anda bisa membuat perbedaan!</p>
@@ -144,7 +144,9 @@ export default function Home() {
 								Masuk Sekarang
 							</NavLink>
 						</div>
-						<img src={BgImage} className="rounded-l-4xl"/>
+						<div>
+							<img src={BgImage} className="rounded-l-4xl"/>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -255,8 +257,8 @@ export default function Home() {
 				</div>
 
 				<div className="grid grid-cols-3 gap-4">
-				{articles.map((item) => {
-					return <Card imageSrc={item.imageSrc} />
+				{articles.map((item, index) => {
+					return <Card key={index} imageSrc={item.imageSrc} />
 				})}
 				</div>
 			</div>
@@ -303,7 +305,7 @@ export default function Home() {
 							<p>Bergabung</p>
 						</NavLink>
 					</div>
-			        <div className="flex items-center gap-4 text-white">
+			        <div className="flex items-center gap-4 text-white mb-3">
 			          <ViewSection id='home' text='Beranda' />
 			          <ViewSection id='about-us' text='Tentang Kami' />
 			          <ViewSection id='how-we-work' text='Cara Kerja' />
@@ -313,7 +315,7 @@ export default function Home() {
 			        </div>
 
 				</div>
-				<img src={FooterImage} className="rounded-s-3xl overflow h-full" />
+				<img src={FooterImage} className="rounded-s-3xl overflow w-full" />
 			</div>
 			<div id="copyright" className="flex justify-between items-center px-10 py-4">
 				<p className="text-gray-500">Copyright &copy; 2024 Cicle Studio All rights reserved</p>

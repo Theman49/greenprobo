@@ -8,6 +8,11 @@ import App from "./App";
 import Record from "./components/Record";
 import RecordList from "./components/RecordList";
 import Home from "./components/Home";
+
+import LoginAdmin from "./components/admin/Login";
+
+import Login from "./components/user/Login";
+
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -18,6 +23,26 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+    ],
+  },
+  {
+    path: "/admin/login",
+    element: <LoginAdmin />,
+    children: [
+      {
+        path: "/admin/login",
+        element: <LoginAdmin />,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+    children: [
+      {
+        path: "/login",
+        element: <Login />,
       },
     ],
   },
