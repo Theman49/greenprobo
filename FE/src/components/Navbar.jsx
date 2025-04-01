@@ -1,16 +1,65 @@
 import { NavLink } from "react-router-dom";
+import Logo from '../assets/Logo.svg';
+
+const handleClick = (event) => {
+  const el = document.querySelector(`#${event.target.getAttribute('data-ref')}`);
+  el.scrollIntoView();
+}
+
+const ViewSection = ({id, text}) => {
+
+  return (
+    <NavLink to={`#${id}`}>
+      <p data-ref={id} onClick={(event) => handleClick(event)}>{text}</p>
+    </NavLink>
+  );        
+}
 
 export default function Navbar() {
   return (
     <div>
       <nav className="flex justify-between items-center mb-6">
         <NavLink to="/">
-          <img alt="MongoDB logo" className="h-10 inline" src="https://d3cy9zhslanhfa.cloudfront.net/media/3800C044-6298-4575-A05D5C6B7623EE37/4B45D0EC-3482-4759-82DA37D8EA07D229/webimage-8A27671A-8A53-45DC-89D7BF8537F15A0D.png"></img>
+          <div className="flex items-center gap-2">
+            <img alt="Logo Greenprobo" className="h-10 inline" src={Logo}></img>
+            <h1 className="text-green-900 text-xl">Greenprobolinggo</h1>
+          </div>
         </NavLink>
 
-        <NavLink className="inline-flex items-center justify-center whitespace-nowrap text-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 h-9 rounded-md px-3" to="/create">
-          Create Employee
-        </NavLink>
+        <div className="flex items-center gap-6 text-white">
+          <ViewSection id='home' text='Beranda' />
+          <ViewSection id='about-us' text='Tentang Kami' />
+          <ViewSection id='how-we-work' text='Cara Kerja' />
+          <ViewSection id='features' text='Fitur' />
+          <ViewSection id='faqs' text='FAQs' />
+          <ViewSection id='article' text='Artikel' />
+          {
+            /*
+          <NavLink to="#home">
+            <p>Beranda</p>
+          </NavLink>
+          <NavLink to="#about-us">
+            <p>Tentang Kami</p>
+          </NavLink>
+          <NavLink to="#how-we-work">
+            <p>Cara Kerja</p>
+          </NavLink>
+          <NavLink to="#features">
+            <p>Fitur</p>
+          </NavLink>
+          <NavLink to="#faqs">
+            <p>FAQs</p>
+          </NavLink>
+          <NavLink to="#article">
+            <p>Artikel</p>
+          </NavLink>
+            */
+          <NavLink to="/login">
+            <p className="bg-green-900 rounded-full px-4 py-2 hover:cursor">Masuk</p>
+          </NavLink>
+          }
+        </div>
+
       </nav>
     </div>
   );
