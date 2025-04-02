@@ -51,7 +51,7 @@ export default function Login() {
 					          	}
 			          		</div>
 			          		<button className="hover:cursor-pointer bg-green-900 text-white rounded-full w-full p-3">
-							  Masuk
+							  <NavLink to="/admin/dashboard">Masuk</NavLink>
 							</button>
 							<a href="/login" className="text-green-900 underline text-center">Masuk sebagai Nasabah</a>
 			          	</div>

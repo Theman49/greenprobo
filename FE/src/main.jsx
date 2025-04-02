@@ -5,6 +5,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import App from "./App";
+import Dashboard from './Dashboard';
 import Record from "./components/Record";
 import RecordList from "./components/RecordList";
 import Home from "./components/Home";
@@ -12,6 +13,7 @@ import Home from "./components/Home";
 import LoginAdmin from "./components/admin/Login";
 
 import Login from "./components/user/Login";
+import DashboardUser from './components/user/Dashboard';
 
 import "./index.css";
 
@@ -22,6 +24,16 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
+        element: <Home />,
+      },
+    ],
+  },
+  {
+    path: "/logout",
+    element: <App />,
+    children: [
+      {
+        path: "/logout",
         element: <Home />,
       },
     ],
@@ -43,6 +55,26 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    children: [
+      {
+        path: "/dashboard",
+        element: <DashboardUser />,
+      },
+    ],
+  },
+  {
+    path: "/admin/dashboard",
+    element: <Dashboard />,
+    children: [
+      {
+        path: "/admin/dashboard",
+        element: <DashboardUser />,
       },
     ],
   },

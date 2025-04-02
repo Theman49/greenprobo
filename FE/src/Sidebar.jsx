@@ -1,0 +1,109 @@
+import { NavLink, useLocation } from 'react-router-dom';
+import {useState} from 'react';
+import GridViewIcon from '@mui/icons-material/GridView';
+import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
+import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import Logo from './assets/LogoDashboard.svg';
+import User from './assets/user.svg';
+
+
+export default function Sidebar(){
+	let userType = 'user';
+	const currLoc = useLocation();
+	console.log(currLoc)
+	if(currLoc.pathname.search('admin/dashboard') >= 0){
+		userType = 'admin';
+	}
+	console.log(userType)
+
+	return(
+		<div className="flex flex-col justify-between rounded-r-2xl bg-green-900 p-6 p-3 min-h-full">
+			<div className="flex flex-col gap-8 text-white">
+	          <div className="flex items-center gap-2">
+	            <img alt="Logo Greenprobo" className="h-10 inline" src={Logo}/>
+	            <h1 className="text-xl">Greenprobolinggo</h1>
+	          </div>
+
+	          {(userType === 'user') ?
+		          <div className="flex flex-col gap-1">
+			          <p>Menu</p>
+			          <div className="flex flex-col gap-1">
+			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 bg-white text-green-900">
+			          		<GridViewIcon className="w-[20px] h-[20px]"/>
+			          		<NavLink to="#">Dashboard</NavLink>
+			          	</div>
+			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<CalculateOutlinedIcon className="w-[20px] h-[20px]"/>
+			          		<NavLink to="#">Simulasi Penghasilan</NavLink>
+			          	</div>
+			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<AccountBalanceWalletOutlinedIcon className="w-[20px] h-[20px]"/>
+			          		<NavLink to="#">Penarikan Tabungan</NavLink>
+			          	</div>
+			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<DescriptionOutlinedIcon className="w-[20px] h-[20px]"/>
+			          		<NavLink to="#">Riwayat Setoran</NavLink>
+			          	</div>
+			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<ReceiptLongOutlinedIcon className="w-[20px] h-[20px]"/>
+			          		<NavLink to="#">Riwayat Transaksi</NavLink>
+			          	</div>
+			          </div>
+		          </div>
+		      :
+		          <div className="flex flex-col gap-1">
+			          <p>Menu</p>
+			          <div className="flex flex-col gap-1">
+			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 bg-white text-green-900">
+			          		<GridViewIcon className="w-[20px] h-[20px]"/>
+			          		<NavLink to="#">Dashboard</NavLink>
+			          	</div>
+			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<ReceiptLongOutlinedIcon className="w-[20px] h-[20px]"/>
+			          		<NavLink to="#">Riwayat Terima Sampah</NavLink>
+			          	</div>
+			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<AccountBalanceWalletOutlinedIcon className="w-[20px] h-[20px]"/>
+			          		<NavLink to="#">Penarikan Tabungan</NavLink>
+			          	</div>
+			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<DescriptionOutlinedIcon className="w-[20px] h-[20px]"/>
+			          		<NavLink to="#">Riwayat Transaksi</NavLink>
+			          	</div>
+			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<PeopleAltOutlinedIcon className="w-[20px] h-[20px]"/>
+			          		<NavLink to="#">Data Nasabah</NavLink>
+			          	</div>
+			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<DeleteOutlinedIcon className="w-[20px] h-[20px]"/>
+			          		<NavLink to="#">Data Sampah</NavLink>
+			          	</div>
+			          </div>
+		          </div>
+		      }
+			</div>
+
+			<div className="flex flex-col bg-white rounded-3xl p-3 gap-5">
+				<div className="flex gap-1">
+					<div className="rounded-full w-[48px] h-[48px]">
+						<img src={User} />
+					</div>
+					<div className="flex flex-col p-1 justify-between">
+						<p className="text-xl font-bold">Artena Nagara</p>
+						<p>Individu</p>
+					</div>
+				</div>
+
+				<div className="flex gap-1 items-center text-red-500">
+					<LogoutOutlinedIcon className="rotate-y-180"/>
+					<NavLink to="/logout">Keluar</NavLink>
+				</div>
+			</div>
+		</div>
+	)	
+}
