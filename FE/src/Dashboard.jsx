@@ -7,7 +7,9 @@ export default function Dashboard() {
 			<div className="h-screen w-1/5">
 				<Sidebar />
 			</div>
-			<Outlet />
+			<div className="h-screen w-full overflow-auto">
+				<Outlet />
+			</div>
 		</div>
 	);
 }

@@ -14,6 +14,7 @@ import LoginAdmin from "./components/admin/Login";
 
 import Login from "./components/user/Login";
 import DashboardUser from './components/user/Dashboard';
+import TrashCalculator from './components/user/TrashCalculator';
 
 import "./index.css";
 
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <DashboardUser />,
+      },
+      {
+        path: "/dashboard/trash-calculator",
+        element: <TrashCalculator />,
       },
     ],
   },

@@ -1,5 +1,4 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import {useState} from 'react';
 import GridViewIcon from '@mui/icons-material/GridView';
 import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
@@ -35,11 +34,11 @@ export default function Sidebar(){
 			          <div className="flex flex-col gap-1">
 			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 bg-white text-green-900">
 			          		<GridViewIcon className="w-[20px] h-[20px]"/>
-			          		<NavLink to="#">Dashboard</NavLink>
+			          		<NavLink to="/dashboard">Dashboard</NavLink>
 			          	</div>
 			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
 			          		<CalculateOutlinedIcon className="w-[20px] h-[20px]"/>
-			          		<NavLink to="#">Simulasi Penghasilan</NavLink>
+			          		<NavLink to="/dashboard/trash-calculator">Simulasi Penghasilan</NavLink>
 			          	</div>
 			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
 			          		<AccountBalanceWalletOutlinedIcon className="w-[20px] h-[20px]"/>
