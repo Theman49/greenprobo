@@ -32,56 +32,56 @@ export default function Sidebar(){
 		          <div className="flex flex-col gap-1">
 			          <p>Menu</p>
 			          <div className="flex flex-col gap-1">
-			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 bg-white text-green-900">
+			          	<NavLink to="/dashboard" className="flex items-center gap-1 rounded-full px-3 py-2 bg-white text-green-900">
 			          		<GridViewIcon className="w-[20px] h-[20px]"/>
-			          		<NavLink to="/dashboard">Dashboard</NavLink>
-			          	</div>
-			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<p>Dashboard</p>
+			          	</NavLink>
+			          	<NavLink to="/dashboard/trash-calculator" className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
 			          		<CalculateOutlinedIcon className="w-[20px] h-[20px]"/>
-			          		<NavLink to="/dashboard/trash-calculator">Simulasi Penghasilan</NavLink>
-			          	</div>
-			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<p>Simulasi Penghasilan</p>
+			          	</NavLink>
+			          	<NavLink to="#" className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
 			          		<AccountBalanceWalletOutlinedIcon className="w-[20px] h-[20px]"/>
-			          		<NavLink to="#">Penarikan Tabungan</NavLink>
-			          	</div>
-			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<p>Penarikan Tabungan</p>
+			          	</NavLink>
+			          	<NavLink to="#" className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
 			          		<DescriptionOutlinedIcon className="w-[20px] h-[20px]"/>
-			          		<NavLink to="#">Riwayat Setoran</NavLink>
-			          	</div>
-			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<p>Riwayat Setoran</p>
+			          	</NavLink>
+			          	<NavLink to="#" className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
 			          		<ReceiptLongOutlinedIcon className="w-[20px] h-[20px]"/>
-			          		<NavLink to="#">Riwayat Transaksi</NavLink>
-			          	</div>
+			          		<p>Riwayat Transaksi</p>
+			          	</NavLink>
 			          </div>
 		          </div>
 		      :
 		          <div className="flex flex-col gap-1">
 			          <p>Menu</p>
 			          <div className="flex flex-col gap-1">
-			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 bg-white text-green-900">
+			          	<NavLink to="#" className="flex items-center gap-1 rounded-full px-3 py-2 bg-white text-green-900">
 			          		<GridViewIcon className="w-[20px] h-[20px]"/>
-			          		<NavLink to="#">Dashboard</NavLink>
-			          	</div>
-			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<p>Dashboard</p>
+			          	</NavLink>
+			          	<NavLink to="#" className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
 			          		<ReceiptLongOutlinedIcon className="w-[20px] h-[20px]"/>
-			          		<NavLink to="#">Riwayat Terima Sampah</NavLink>
-			          	</div>
-			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<p>Riwayat Terima Sampah</p>
+			          	</NavLink>
+			          	<NavLink to="#" className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
 			          		<AccountBalanceWalletOutlinedIcon className="w-[20px] h-[20px]"/>
-			          		<NavLink to="#">Penarikan Tabungan</NavLink>
-			          	</div>
-			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<p>Penarikan Tabungan</p>
+			          	</NavLink>
+			          	<NavLink to="#" className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
 			          		<DescriptionOutlinedIcon className="w-[20px] h-[20px]"/>
-			          		<NavLink to="#">Riwayat Transaksi</NavLink>
-			          	</div>
-			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<p>Riwayat Transaksi</p>
+			          	</NavLink>
+			          	<NavLink to="#" className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
 			          		<PeopleAltOutlinedIcon className="w-[20px] h-[20px]"/>
-			          		<NavLink to="#">Data Nasabah</NavLink>
-			          	</div>
-			          	<div className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
+			          		<p>Data Nasabah</p>
+			          	</NavLink>
+			          	<NavLink to="#" className="flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900">
 			          		<DeleteOutlinedIcon className="w-[20px] h-[20px]"/>
-			          		<NavLink to="#">Data Sampah</NavLink>
-			          	</div>
+			          		<p>Data Sampah</p>
+			          	</NavLink>
 			          </div>
 		          </div>
 		      }

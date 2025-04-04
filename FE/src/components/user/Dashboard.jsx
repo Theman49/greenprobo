@@ -8,32 +8,9 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import { ColorsArr } from '../../utils/Colors';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
+import {dataset1, dataset2} from '../..//data/Trash';
 
-const data = {
-	total: 230,
-	detail: [
-		{
-			id: 1,
-			label: 'plastik',
-			value: 80	
-		},
-		{
-			id: 2,
-			label: 'kertas',
-			value: 40	
-		},
-		{
-			id: 3,
-			label: 'logam',
-			value: 50	
-		},
-		{
-			id: 4,
-			label: 'beling',
-			value: 60	
-		},
-	]
-}
+const data = dataset1;
 
 const ChartOne = () => {
 	const parentRef = useRef(null);
@@ -46,7 +23,6 @@ const ChartOne = () => {
 
 	const scaleSize = 1;
 	const chartHeight = 220;
-
 
 	useEffect(() => {
 		if(parentRef.current){
@@ -128,92 +104,7 @@ const ChartOne = () => {
 
 const ChartTwo = () => {
 
-	const dataset = [
-		{
-		  plastik: 59,
-		  kertas: 57,
-		  logam: 86,
-		  beling: 21,
-		  month: 'Jan',
-		},
-		{
-		  plastik: 50,
-		  kertas: 52,
-		  logam: 78,
-		  beling: 28,
-		  month: 'Feb',
-		},
-		{
-		  plastik: 47,
-		  kertas: 53,
-		  logam: 106,
-		  beling: 41,
-		  month: 'Mar',
-		},
-		{
-		  plastik: 54,
-		  kertas: 56,
-		  logam: 92,
-		  beling: 73,
-		  month: 'Apr',
-		},
-		{
-		  plastik: 57,
-		  kertas: 69,
-		  logam: 92,
-		  beling: 99,
-		  month: 'May',
-		},
-		{
-		  plastik: 60,
-		  kertas: 63,
-		  logam: 103,
-		  beling: 144,
-		  month: 'June',
-		},
-		{
-		  plastik: 59,
-		  kertas: 60,
-		  logam: 105,
-		  beling: 319,
-		  month: 'July',
-		},
-		{
-		  plastik: 65,
-		  kertas: 60,
-		  logam: 106,
-		  beling: 249,
-		  month: 'Aug',
-		},
-		{
-		  plastik: 51,
-		  kertas: 51,
-		  logam: 95,
-		  beling: 131,
-		  month: 'Sept',
-		},
-		{
-		  plastik: 60,
-		  kertas: 65,
-		  logam: 97,
-		  beling: 55,
-		  month: 'Oct',
-		},
-		{
-		  plastik: 67,
-		  kertas: 64,
-		  logam: 76,
-		  beling: 48,
-		  month: 'Nov',
-		},
-		{
-		  plastik: 61,
-		  kertas: 70,
-		  logam: 103,
-		  beling: 25,
-		  month: 'Dec',
-		},
-	  ];
+	const dataset = dataset2;	
 	  
 	  const valueFormatter = (value) => {
 		return `${value}`;
