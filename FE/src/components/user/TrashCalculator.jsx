@@ -6,8 +6,9 @@ import {dataset1, dataset3} from '../../data/Trash';
 import { NumericFormat } from 'react-number-format';
 
 const Calculator = () => {
+    const parentEl = useRef(null);
 
-    const RowItem = ({idx, handler}) => {
+    const RowItem = ({idx}) => {
         const [trashType, setTrashType] = useState('--');
         const [listTrash, setListTrash] = useState([]);
         const [trashCode, setTrashCode] = useState('--');
@@ -52,8 +53,8 @@ const Calculator = () => {
 
 
         return(
-            <div id={`row${idx}`} className="flex gap-2">
-                <select value={trashType} onChange={handleChange} className="w-1/5">
+            <div id={`row${idx}`} className="flex gap-2 w-full">
+                <select value={trashType} onChange={handleChange} className="w-full">
                     <option value="--">--Jenis Sampah--</option>
                     {dataset1.detail.map((item, key) => {
                         return(
@@ -61,7 +62,7 @@ const Calculator = () => {
                         )
                     })}
                 </select>
-                <select value={trashCode} onChange={handleChangeTrashCode} className="w-2/5">
+                <select value={trashCode} onChange={handleChangeTrashCode} className="w-full">
                     <option value="--">--Pilih Sampah--</option>
                     {listTrash?.map((item, key) => {
                         return(
@@ -69,55 +70,129 @@ const Calculator = () => {
                         )
                     })}
                 </select>
-                <input ref={rTotal} type="text" id={`total${idx}`} className="pl-2 border-1 border-gray-500 rounded-md w-[60px]" onChange={calcResult}/>
-                <div className="flex items-center rounded-lg border-1 border-gray-300 w-[160px]">
+                <input ref={rTotal} type="text" id={`total${idx}`} className="pl-2 border-1 border-gray-500 rounded-md w-full" onChange={calcResult}/>
+                <div className="flex items-center rounded-lg border-1 border-gray-300 w-full">
                     <div className="bg-gray-300 p-2 rounded-md">
                         Rp
                     </div>
                     <div className="pl-1 w-full">
                         {result === '' && <p className="text-gray-300">Hasil</p>}
-                        {result !== '' && <NumericFormat value={result} thousandSeparator="," className="w-full readonly"/>}
+                        {result !== '' && <NumericFormat id={`result${idx}`} value={result} thousandSeparator="," className="w-full readonly"/>}
                     </div>
-                </div>
-                <div onClick={() => handler.delete(idx)} className="flex items-center text-bold text-xl hover:cursor-pointer">
-                    <p>X</p>
                 </div>
             </div>
         )
 
     }
-    const addRow = () => {
-        setWrapper((prevData) => [...prevData, {id: Date.now(), content: <RowItem idx={Date.now()} handler={{delete: deleteRow}} />}])
-    }
 
-    const deleteRow = (id) => {
-        //console.log(wrapper)
-        setWrapper((prevData) => prevData.filter((item) => item.id !== id))
-    }
     const [wrapper, setWrapper] = useState([
         {
             id: Date.now(),
-            content: <RowItem idx={Date.now()} handler={{delete: deleteRow}} />
+            content: <RowItem idx={Date.now()}  />
         }
     ]);
 
+    const [grandTotal, setGrandTotal] = useState(0);
+    const [totalIncome, setTotalIncome] = useState(0);
+
+    const addRow = () => {
+        setWrapper((prevData) => [...prevData, {id: Date.now(), content: <RowItem idx={Date.now()}  />}])
+    }
+
+    const deleteRow = (id) => {
+        const wrapperEl = parentEl.current
+        const item = wrapperEl.querySelector(`div[id="${id}"]`)
+        /*
+        const idWrapper = ((wrapperEl.querySelector(`div[id="${id}"] > div`)).id).substr(3)
+        console.log('IDWRAPPER', idWrapper)
+        setWrapper(prevData => prevData.filter((item) => item.id !== idWrapper))
+        */
+        item.remove()
+    }
+
+    const [clickCalculate, setClickCalculate] = useState(false);
+
+    const calculateGrandTotal = () => {
+        console.log("wrapper", wrapper)
+        if(!clickCalculate){
+            const wrapperEl = parentEl.current
+            const totals = Array.from(wrapperEl.querySelectorAll('input[id^="total"]'))
+            const incomes = Array.from(wrapperEl.querySelectorAll('input[id^="result"]'))
+
+            const totalValues = [];
+            totals.forEach((item) => {
+                const temp = parseFloat((item.value).replaceAll(/,/g,""));
+                totalValues.push(temp)
+            })
+
+            const incomeValues = [];
+            incomes.forEach((item) => {
+                const temp = parseFloat((item.value).replaceAll(/,/g,""));
+                incomeValues.push(temp)
+            })
+            const tempTotals = totalValues.reduce((total, item) => total + item)
+            const tempTotalIncome = incomeValues.reduce((total, item) => total + item)
+            setGrandTotal(tempTotals)
+            setTotalIncome(tempTotalIncome)
+            setClickCalculate(true);
+        }else{
+            const wrapperEl = parentEl.current
+            const items = Array.from(wrapperEl.querySelectorAll(`div`))
+            items.forEach((item) => {
+                item.remove()
+            })
+            addRow();
+            setTotalIncome(0);
+            setGrandTotal(0);
+            setClickCalculate(false);
+        }
+    }
+
+
     return(
-        <div className="flex flex-col gap-2">
-            <div id="wrapper" className="flex flex-col gap-2">
-                {wrapper.map((item) => {
-                    return item.content
-                })}
-            </div>
-            <div className="flex justify-between gap-5">
-                <button onClick={addRow} className="flex gap-1 items-center px-4 py-2 rounded-full border-1 border-green-900 text-green-900 w-1/4 hover:cursor-pointer">
-                    <p>+</p>
-                    <p>Tambah</p>
-                </button>
-                <button className="flex justify-center items-center px-4 py-2 rounded-full border-1 border-green-900 bg-green-900 text-white w-full hover:cursor-pointer">
-                    <p>Hitung</p>
-                </button>
+        <div className="flex flex-col justify-end items-end gap-4 w-full">
+            <div className="flex flex-col gap-2 w-full">
+                <div ref={parentEl} id="wrapper" className="flex flex-col gap-2 w-full">
+                    {wrapper.map((item, key) => {
+                        return(
+                            <div id={key} className="flex gap-1">
+                                {item.content}
+                                <div onClick={() => deleteRow(key)} className="flex items-center text-bold text-xl hover:cursor-pointer">
+                                    <p>X</p>
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
+                <div className="flex justify-between gap-5">
+                    <button onClick={addRow} className="flex gap-1 items-center px-4 py-2 rounded-full border-1 border-green-900 text-green-900 w-1/4 hover:cursor-pointer">
+                        <p>+</p>
+                        <p>Tambah</p>
+                    </button>
+                    {(!clickCalculate) ? 
+                        <button onClick={calculateGrandTotal} className="flex justify-center items-center px-4 py-2 rounded-full border-1 border-green-900 bg-green-900 text-white w-full hover:cursor-pointer">
+                            <p>Hitung</p>
+                        </button>
+                        :
+                        <button onClick={calculateGrandTotal} className="flex justify-center items-center px-4 py-2 rounded-full border-1 border-red-500 bg-red-500 text-white w-full hover:cursor-pointer">
+                            <p>Reset</p>
+                        </button>
+                    }
+                </div>
             </div>
 
+            <div className="bg-gray-200 h-[1px] w-full"></div>
+
+            <div className="flex flex-col gap-2 w-1/2">
+                <div className="flex justify-between text-right">
+                    <p className="text-gray-500 w-full">Total:</p>
+                    <p className="text-2xl font-bold w-2/3">{grandTotal}</p>
+                </div>
+                <div className="flex justify-between text-right">
+                    <p className="text-gray-500 w-full">Total Pendapatan:</p>
+                    <NumericFormat value={totalIncome} thousandSeparator="," prefix="Rp" className="text-right text-2xl font-bold w-2/3"/>
+                </div>
+            </div>
         </div>
     )
 }
@@ -193,7 +268,7 @@ const ListTrashFee = () => {
                                         <tr id={key}>
                                             <td className="p-2">{row.name}</td>
                                             <td className="p-2 text-center">{row.code}</td>
-                                            <td className="flex p-2 text-center">Rp<NumericFormat value={row.fee} thousandSeparator="," className="w-full" /></td>
+                                            <td className="flex p-2 text-center"><NumericFormat value={row.fee} thousandSeparator="," prefix="Rp" className="w-full" /></td>
                                         </tr>
                                     );
                                 })}
@@ -218,10 +293,9 @@ export default function TrashCalculator(){
 			</div>
 
             <div className="flex gap-4 px-6 w-full">
-                <div className="flex flex-col gap-6 p-4 rounded-xl border-1 border-gray-200 w-2/3">
+                <div className="flex flex-col gap-6 p-4 rounded-xl border-1 border-gray-200 w-2/3 h-fit">
                     <p className="text-xl font-bold">Kalkulator Sampah</p>
-
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 w-full">
                         <Calculator />
                     </div>
                 </div>
