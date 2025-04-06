@@ -87,7 +87,7 @@ const ChartOne = () => {
 						const percentage = (item.value / data.total * 100).toFixed(2);
 						const bgClass = ColorsArr[key]
 						return(
-							<div id={key} className="flex gap-8 items-center">
+							<div key={key} className="flex gap-8 items-center">
 								<div className="flex gap-2 items-center">
 									<div className="rounded-full w-[16px] h-[16px]" style={{backgroundColor: bgClass}}></div>
 									<p>{item.label}</p>
@@ -159,7 +159,7 @@ const ChartTwo = () => {
 						{data.detail.map((item,key) => {
 							const bgClass = ColorsArr[key]
 							return(
-								<div id={key} className="flex gap-8 items-center">
+								<div key={key} className="flex gap-8 items-center">
 									<div className="flex gap-2 items-center">
 										<div className="rounded-full w-[16px] h-[16px]" style={{backgroundColor: bgClass}}></div>
 										<p>{item.label}</p>

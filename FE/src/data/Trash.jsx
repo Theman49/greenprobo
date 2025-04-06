@@ -285,3 +285,54 @@ export const dataset3 = {
             fee: 6.000,},
         ]
     }
+
+export const dataset4 = [
+  { id:1, facturNo: '174/A/12/2024', transactionDate: '20 Desember 2024', recipient: 'Agus Mulyono', trashAmount: 8.12, income: 48210 },
+  { id:2, facturNo: '082/A/12/2024', transactionDate: '3 Desember 2024', recipient: 'Agus Mulyono', trashAmount: 8.12, income: 34900 },
+  { id:3, facturNo: '041/A/11/2024', transactionDate: '29 November 2024', recipient: 'Andi Setiawan', trashAmount: 8.12, income: 53900 },
+  { id:4,  facturNo: '010/A/11/2024', transactionDate: '12 November 2024', recipient: 'Agus Mulyono', trashAmount: 8.12, income: 12930 },
+  { id:5, facturNo: '026/A/09/2024', transactionDate: '1 September 2024', recipient: 'Tugiman', trashAmount: 8.12, income: 50305 },
+  { id:6, facturNo: '175/A/12/2024', transactionDate: '20 Desember 2024', recipient: 'Agus Mulyono', trashAmount: 8.12, income: 48210 },
+  { id:7, facturNo: '083/A/12/2024', transactionDate: '3 Desember 2024', recipient: 'Agus Mulyono', trashAmount: 8.12, income: 34900 },
+  { id:8, facturNo: '042/A/11/2024', transactionDate: '29 November 2024', recipient: 'Andi Setiawan', trashAmount: 8.12, income: 53900 },
+  { id:9,  facturNo: '011/A/11/2024', transactionDate: '12 November 2024', recipient: 'Agus Mulyono', trashAmount: 8.12, income: 12930 },
+  { id:10, facturNo: '027/A/09/2024', transactionDate: '1 September 2024', recipient: 'Tugiman', trashAmount: 8.12, income: 50305 },
+]
+
+export const dataset5 = [
+  {
+    facturNo: '174/A/12/2024',
+    detail: [
+      {
+        trashType: 'plastik',
+        name: 'Kresek',
+        totalAmount: 1.48,
+        totalFee: 348
+      },
+      {
+        trashType: 'plastik',
+        name: 'Kresek',
+        totalAmount: 1.48,
+        totalFee: 348
+      },
+      {
+        trashType: 'plastik',
+        name: 'Kresek',
+        totalAmount: 1.48,
+        totalFee: 348
+      },
+      {
+        trashType: 'plastik',
+        name: 'Kresek',
+        totalAmount: 1.48,
+        totalFee: 348
+      },
+      {
+        trashType: 'plastik',
+        name: 'Kresek',
+        totalAmount: 1.48,
+        totalFee: 348
+      },
+    ]
+  }
+]

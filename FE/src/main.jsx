@@ -15,6 +15,12 @@ import LoginAdmin from "./components/admin/Login";
 import Login from "./components/user/Login";
 import DashboardUser from './components/user/Dashboard';
 import TrashCalculator from './components/user/TrashCalculator';
+//import Withdraw from './components/user/Withdraw'; #Penarikan Tabungan;
+import DepositHistory from "./components/user/DepositHistory";
+import DepositHistoryDetail from "./components/user/DepositHistoryDetail";
+
+
+import NotFound from "./components/NotFound";
 
 import "./index.css";
 
@@ -71,6 +77,18 @@ const router = createBrowserRouter([
         path: "/dashboard/trash-calculator",
         element: <TrashCalculator />,
       },
+      {
+        path: "/dashboard/deposit-history",
+        element: <DepositHistory />,
+      },
+      {
+        path: "/dashboard/deposit-history/detail/:facturNo",
+        element: <DepositHistoryDetail />,
+      },
+      {
+        path: "*",
+        element: <NotFound />
+      },
     ],
   },
   {
@@ -80,6 +98,10 @@ const router = createBrowserRouter([
       {
         path: "/admin/dashboard",
         element: <DashboardUser />,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
       },
     ],
   },

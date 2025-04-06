@@ -165,7 +165,7 @@ const Calculator = () => {
                     })}
                 </div>
                 <div className="flex justify-between gap-5">
-                    <button onClick={addRow} className="flex gap-1 items-center px-4 py-2 rounded-full border-1 border-green-900 text-green-900 w-1/4 hover:cursor-pointer">
+                    <button onClick={addRow} className="flex justify-center gap-1 items-center px-4 py-2 rounded-full border-1 border-green-900 text-green-900 w-1/4 hover:cursor-pointer">
                         <p>+</p>
                         <p>Tambah</p>
                     </button>

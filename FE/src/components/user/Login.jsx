@@ -38,11 +38,11 @@ export default function Login() {
 			          	<div className="flex flex-col gap-4">
 			          		<div className="flex flex-col">
 				          		<p>ID Pengguna</p>
-				          		<input className="rounded p-2 border-1 border-gray-300" placeholder="Masukkan nomor id anda"/>
+				          		<input className="rounded p-2 border-1 border-gray-300 placeholder:text-gray-400" placeholder="Masukkan nomor id anda"/>
 			          		</div>
 			          		<div className="flex flex-col relative">
 				          		<p>Kata Sandi</p>
-				          		<input id="password" type={(showPass) ? 'text' : 'password'} className="w-full rounded p-2 border-1 border-gray-300" placeholder="Masukkan kata sandi"/>
+				          		<input id="password" type={(showPass) ? 'text' : 'password'} className="w-full rounded p-2 border-1 border-gray-300 placeholder:text-gray-400" placeholder="Masukkan kata sandi"/>
 				          		{
 				          			(showPass === false) ? 
 				          		<VisibilityIcon className="z-100 absolute top-[45%] right-[3%] w-[48px] h-[48px] text-gray-300" onClick={togglePassword}/>
