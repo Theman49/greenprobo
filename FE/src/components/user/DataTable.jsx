@@ -2,9 +2,9 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
-import { dataset4 } from '../data/Trash';
+import { dataset4 } from '../../data/Trash';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { formatCurrency } from '../utils/Currency';
+import { formatCurrency } from '../../utils/Currency';
 
 export default function DataTable() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function DataTable() {
     { field: 'recipient', headerName: 'Penerima', width: 200 },
     { field: 'trashAmount', headerName: 'Total Sampah', width: 200, align: 'center', headerAlign: 'center' },
     { field: 'income', headerName: 'Pendapatan', width: 200, align: 'center', headerAlign: 'center' },
-    { field: 'actions', type:"actions", headerName: 'Actions', width: 200, getActions: ({id}) => {
+    { field: 'actions', type:"actions", headerName: 'Aksi', width: 200, getActions: ({id}) => {
       return [
           <NavLink onClick={() => handleSeeDetail(id)} className="flex justify-center items-center px-2 py-1 rounded-full bg-gray-50 border-1 border-gray-300 hover:cursor-pointer">
               <p>Lihat Detail</p>

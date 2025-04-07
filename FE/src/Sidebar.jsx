@@ -60,7 +60,7 @@ export default function Sidebar(){
 			          		<GridViewIcon className="w-[20px] h-[20px]"/>
 			          		<p>Dashboard</p>
 			          	</NavLink>
-			          	<NavLink to="/admin/dashboard/receipt-history" className={`flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900 ${url.pathname === '/admin/dashboard/receipt-history' ? 'bg-white text-green-900' : ''}`}>
+			          	<NavLink to="/admin/dashboard/receipt-history" className={`flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900 ${url.pathname.includes('/admin/dashboard/receipt-history') ? 'bg-white text-green-900' : ''}`}>
 			          		<ReceiptLongOutlinedIcon className="w-[20px] h-[20px]"/>
 			          		<p>Riwayat Terima Sampah</p>
 			          	</NavLink>

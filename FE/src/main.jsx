@@ -11,6 +11,10 @@ import RecordList from "./components/RecordList";
 import Home from "./components/Home";
 
 import LoginAdmin from "./components/admin/Login";
+import DashboardAdmin from "./components/admin/Dashboard";
+import ReceiptHistory from "./components/admin/ReceiptHistory";
+import ReceiptHistoryDetail from "./components/admin/ReceiptHistoryDetail";
+import ReceiptHistoryAdd from "./components/admin/ReceiptHistoryAdd";
 
 import Login from "./components/user/Login";
 import DashboardUser from './components/user/Dashboard';
@@ -97,7 +101,19 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/admin/dashboard",
-        element: <DashboardUser />,
+        element: <DashboardAdmin />
+      },
+      {
+        path: "/admin/dashboard/receipt-history",
+        element: <ReceiptHistory />
+      },
+      {
+        path: "/admin/dashboard/receipt-history/detail/:facturNo",
+        element: <ReceiptHistoryDetail />
+      },
+      {
+        path: "/admin/dashboard/receipt-history/add",
+        element: <ReceiptHistoryAdd />
       },
       {
         path: "*",

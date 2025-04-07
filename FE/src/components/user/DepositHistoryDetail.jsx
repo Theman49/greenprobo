@@ -29,23 +29,23 @@ export default function DepositHistoryDetail() {
                             <div className="flex flex-col gap-2">
                                 <div className="flex flex-col gap-1">
                                     <p className="text-xl">Kode Nasabah</p>
-                                    <p>028</p>
+                                    <p className="text-gray-500">028</p>
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <p className="text-xl">Nama Nasabah</p>
-                                    <p>Artena Nagara</p>
+                                    <p className="text-gray-500">Artena Nagara</p>
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <p className="text-xl">No. Faktur</p>
-                                    <p>{data.facturNo}</p>
+                                    <p className="text-gray-500">{data.facturNo}</p>
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <p className="text-xl">Tanggal Terima</p>
-                                    <p>{data.transactionDate}</p>
+                                    <p className="text-gray-500">{data.transactionDate}</p>
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <p className="text-xl">Penerima</p>
-                                    <p>{data.recipient}</p>
+                                    <p className="text-gray-500">{data.recipient}</p>
                                 </div>
                             </div>
                         </div>
