@@ -6,7 +6,7 @@ import NotFound from "../NotFound";
 import { NumericFormat } from "react-number-format";
 import { formatCurrency } from "../../utils/Currency";
 import Error from "../Error";
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import ShareIcon from '@mui/icons-material/Share';
 import EditSquareIcon from '@mui/icons-material/EditSquare';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -419,18 +419,18 @@ export default function ReceiptHistoryDetail() {
                         </div>
                         {!isPreview &&
                         <div className="flex justify-end">
-                            <div onClick={handlePreview} className="flex gap-1 items-center px-4 py-1 justify-center rounded-full border-1 bg-green-900 text-white hover:cursor-pointer">
-                                <VisibilityIcon sx={{width: '20px', height: '20px'}}/> <p>Pratinjau</p>
+                            <div onClick={handlePreview} className="flex gap-1 items-center px-24 py-4 justify-center rounded-full border-1 bg-green-900 text-white hover:cursor-pointer">
+                                <p className='text-lg font-semibold'>Selesai</p>
                             </div>
                         </div>
                         }
                         {isPreview &&
-                        <div className="flex justify-end gap-2">
-                            <div onClick={handleEdit} className="flex gap-1 items-center px-4 py-1 justify-center rounded-full border-1 text-green-900  hover:cursor-pointer">
-                                <EditSquareIcon sx={{width: '20px', height: '20px'}}/> <p>Edit</p>
+                        <div className="w-full flex flex-col gap-2">
+                            <div onClick={handleEdit} className="flex gap-2 items-center px-8 py-4 justify-center rounded-full border-1 text-green-900  hover:cursor-pointer">
+                                <EditSquareIcon sx={{width: '20px', height: '20px'}}/> <p className='text-base font-bold'>Edit</p>
                             </div>
-                            <div onClick={handlePreview} className="flex gap-1 items-center px-4 py-1 justify-center rounded-full border-1 bg-green-900 text-white hover:cursor-pointer">
-                                <p>+ Tambah Transaksi Baru</p>
+                            <div onClick={handlePreview} className="flex gap-2 items-center px-4 py-4 justify-center rounded-full border-1 bg-green-900 text-white hover:cursor-pointer">
+                               <ShareIcon  sx={{width: '24px', height: '24px'}}/> <p className='text-base font-semibold'>Kirim Nota</p>
                             </div>
                         </div>
                         }
