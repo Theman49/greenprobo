@@ -15,6 +15,9 @@ import DashboardAdmin from "./components/admin/Dashboard";
 import ReceiptHistory from "./components/admin/ReceiptHistory";
 import ReceiptHistoryDetail from "./components/admin/ReceiptHistoryDetail";
 import ReceiptHistoryAdd from "./components/admin/ReceiptHistoryAdd";
+import TrashManagement from "./components/admin/TrashManagement";
+import TrashManagementEdit from "./components/admin/TrashManagementEdit";
+import TrashManagementAdd from "./components/admin/TrashManagementAdd";
 
 import Login from "./components/user/Login";
 import DashboardUser from './components/user/Dashboard';
@@ -114,6 +117,18 @@ const router = createBrowserRouter([
       {
         path: "/admin/dashboard/receipt-history/add",
         element: <ReceiptHistoryAdd />
+      },
+      {
+        path: "/admin/dashboard/trash-management",
+        element: <TrashManagement />
+      },
+      {
+        path: "/admin/dashboard/trash-management/edit",
+        element: <TrashManagementEdit />
+      },
+      {
+        path: "/admin/dashboard/trash-management/add",
+        element: <TrashManagementAdd />
       },
       {
         path: "*",

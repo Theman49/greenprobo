@@ -76,7 +76,7 @@ export default function Sidebar(){
 			          		<PeopleAltOutlinedIcon className="w-[20px] h-[20px]"/>
 			          		<p>Data Nasabah</p>
 			          	</NavLink>
-			          	<NavLink to="/admin/dashboard/trash-management" className={`flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900 ${url.pathname === '/admin/dashboard/trash-management' ? 'bg-white text-green-900' : ''}`}>
+			          	<NavLink to="/admin/dashboard/trash-management" className={`flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900 ${url.pathname.includes('/admin/dashboard/trash-management') ? 'bg-white text-green-900' : ''}`}>
 			          		<DeleteOutlinedIcon className="w-[20px] h-[20px]"/>
 			          		<p>Data Sampah</p>
 			          	</NavLink>
