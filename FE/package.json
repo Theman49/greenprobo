@@ -17,6 +17,7 @@
     "@mui/x-charts": "^7.28.0",
     "@mui/x-data-grid": "^7.28.3",
     "@tailwindcss/vite": "^4.0.17",
+    "axios": "^1.8.4",
     "date-fns": "^4.1.0",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Types, Village } from "../../data/Customers"; 
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import axios from 'axios';
 
 import { Customers } from "../../data/Customers";
 
@@ -16,21 +17,47 @@ export default function CustomerManagementEdit() {
   const { id } = useParams(); 
   const navigate = useNavigate();
 
+  const baseUrl = `http://localhost:3000/api/customers`;
+
   useEffect(() => {
-    const customerData = Customers.find((customer) => customer.code === id);
-    if (customerData) {
-      setPayload(customerData);  
+    const fetchData = async() => {
+      // const customerData = Customers.find((customer) => customer.code === id);
+      const res = await axios.get(`${baseUrl}/${id}`)
+      if (res.data) {
+        setPayload(res.data);  
+      }
     }
+    fetchData();
   }, [id]);
 
-  const handleSave = () => {
+  const handleSave = async() => {
     console.log("Save Customer Data:", payload);
-    navigate("/admin/dashboard/customer-management"); 
+
+    const req = await axios.patch(`${baseUrl}/${payload._id}`, {
+      name: payload.name,
+      type: payload.type,
+      address: payload.address,
+      village: payload.village,
+      whatsapp: payload.whatsapp,
+    });
+    if(req){
+      console.log('REQ', req)
+      if(req.status == 200){
+        navigate("/admin/dashboard/customer-management"); 
+      }
+    }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async() => {
     console.log("Delete Customer");
-    navigate("/admin/dashboard/customer-management"); 
+    const req = await axios.delete(`${baseUrl}/${id}`);
+    if(req){
+      console.log('REQ', req)
+      if(req.status == 200){
+        navigate("/admin/dashboard/customer-management"); 
+      }
+    }
+    //navigate("/admin/dashboard/customer-management"); 
   };
 
   return (
@@ -47,7 +74,7 @@ export default function CustomerManagementEdit() {
         <div className="flex flex-col gap-6 p-4 rounded-xl border-1 border-gray-300 w-1/3 h-fit">
           <div className="flex justify-between items-center">
             <p className="text-xl">Edit Nasabah</p>
-            <button onClick={handleDelete} className="text-red-600">Hapus Data</button>
+            <button onClick={handleDelete} className="text-red-600 hover:cursor-pointer">Hapus Data</button>
           </div>
 
           <div className="flex flex-col gap-2">

@@ -129,24 +129,22 @@ const ViewSection = ({id, text}) => {
 export default function Home() {
 	return(
 		<div>
-			<div className="relative h-[1200px]">
-				<div className="sticky p-6">
-					<Navbar/>
-				</div>
-				<div id="home" className="absolute top-0 -z-10 w-full">
-					<div className="flex gap justify-between">
-						<div id="hero-container" className="p-6 justify-center flex flex-col gap-8 w-3/5">
-							<div className="flex flex-col gap-2">
-								<h1 className="text-3xl">Bersama Membangun <div className="relative inline">Probolinggo<span className="absolute top-[80%] -z-10 left-0 bg-green-200 h-2 w-full"></span></div> yang Lebih Bersih dan <span className="text-green-900 italic">Hijau</span></h1>
-								<p className="text-gray-500">Sampah Anda memiliki nilai yang bisa membantu lingkungan dan ekonomi lokal. Ayo simpan dan lihat bagaimana Anda bisa membuat perbedaan!</p>
-							</div>
-							<NavLink to="/login" className="bg-green-900 text-white w-fit px-4 py-2 rounded-full ">
-								Masuk Sekarang
-							</NavLink>
+			<div className="absolute p-6 w-full">
+				<Navbar/>
+			</div>
+			<div id="home" className="w-full">
+				<div className="flex gap justify-between">
+					<div id="hero-container" className="p-6 justify-center flex flex-col gap-8 w-3/5">
+						<div className="flex flex-col gap-2">
+							<h1 className="text-3xl">Bersama Membangun <div className="relative inline">Probolinggo<span className="absolute top-[80%] -z-10 left-0 bg-green-200 h-2 w-full"></span></div> yang Lebih Bersih dan <span className="text-green-900 italic">Hijau</span></h1>
+							<p className="text-gray-500">Sampah Anda memiliki nilai yang bisa membantu lingkungan dan ekonomi lokal. Ayo simpan dan lihat bagaimana Anda bisa membuat perbedaan!</p>
 						</div>
-						<div>
-							<img src={BgImage} className="rounded-l-4xl"/>
-						</div>
+						<NavLink to="/login" className="bg-green-900 text-white w-fit px-4 py-2 rounded-full ">
+							Masuk Sekarang
+						</NavLink>
+					</div>
+					<div>
+						<img src={BgImage} className="rounded-l-4xl"/>
 					</div>
 				</div>
 			</div>

@@ -1,9 +1,10 @@
-import * as React from 'react';
+import {useState, useEffect} from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import { Customers } from '../../data/Customers'; 
 import { NavLink, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function CustomerManagementTable() {
   const navigate = useNavigate();
@@ -32,6 +33,30 @@ export default function CustomerManagementTable() {
     } },
   ];
 
+  const [rows, setRows] = useState();
+  const baseUrl = `http://localhost:3000/api/customers`;
+
+  useEffect(() => {
+    const fetchData = async() => {
+      const res = await axios.get(`${baseUrl}`)
+      if (res.data) {
+        const temp = res.data.map((item) => {
+          return {
+            id: item._id,
+            code: item.code,
+            name: item.name,
+            type: item.type,
+            address: item.address,
+            village: item.village,
+          }
+        })
+        setRows(temp);  
+      }
+    }
+    fetchData();
+  }, [])
+
+  /*
   const rows = Customers.map((item) => {
     return {
       id: item.code,
@@ -42,6 +67,7 @@ export default function CustomerManagementTable() {
       village: item.village,
     }
   });
+  */
 
   const paginationModel = { page: 0, pageSize: 10 };
 

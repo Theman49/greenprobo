@@ -72,7 +72,7 @@ export default function Sidebar(){
 			          		<DescriptionOutlinedIcon className="w-[20px] h-[20px]"/>
 			          		<p>Riwayat Transaksi</p>
 			          	</NavLink>
-			          	<NavLink to="/admin/dashboard/customer-management" className={`flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900 ${url.pathname === '/admin/dashboard/user-management' ? 'bg-white text-green-900' : ''}`}>
+			          	<NavLink to="/admin/dashboard/customer-management" className={`flex items-center gap-1 rounded-full px-3 py-2 hover:bg-white hover:text-green-900 ${url.pathname.includes('/admin/dashboard/customer-management') ? 'bg-white text-green-900' : ''}`}>
 			          		<PeopleAltOutlinedIcon className="w-[20px] h-[20px]"/>
 			          		<p>Data Nasabah</p>
 			          	</NavLink>

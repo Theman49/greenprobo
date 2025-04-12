@@ -5,7 +5,7 @@ export const Customers = [
         type: 'individu',
         address: 'Probolinggo',
         village: 'Sumbersekar',
-        whatsApp: '082260840196',
+        whatsapp: '082260840196',
         username: 'artenanagara',
         password: 'artenanagara',
     },

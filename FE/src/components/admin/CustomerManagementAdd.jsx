@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NumericFormat } from "react-number-format";
 import { Types, Village } from "../../data/Customers";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 export default function CustomerManagementAdd() {
   const [payload, setPayload] = useState({
@@ -13,12 +14,28 @@ export default function CustomerManagementAdd() {
   });
 
   const navigate = useNavigate();
+  const baseUrl = `http://localhost:3000/api/customers`;
 
-  const handleAdd = () => {
+  const handleAdd = async() => {
     console.log("Add");
     console.log(payload);
+
+    const req = await axios.post(`${baseUrl}`, {
+      name: payload.name,
+      type: payload.type,
+      address: payload.address,
+      village: payload.village,
+      whatsapp: payload.whatsapp,
+    });
+    if(req){
+      console.log('REQ', req)
+      if(req.status == 200){
+        navigate("/admin/dashboard/customer-management"); 
+      }
+    }
+
     // Add logic to save the customer data
-    navigate('/admin/dashboard/customer-management'); // Navigate to customer management page
+    // navigate('/admin/dashboard/customer-management'); // Navigate to customer management page
   };
 
   const handleChange = (key, e) => {
