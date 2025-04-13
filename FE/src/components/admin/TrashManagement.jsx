@@ -1,27 +1,29 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {Tabs, Tab} from '@mui/material';
 import { ColorsArr } from '../../utils/Colors';
-import { dataset1, dataset3, dataset4 } from '../../data/Trash';
+//import { dataset1, dataset3, dataset4 } from '../../data/Trash';
 import { NumericFormat } from 'react-number-format';
 import { formatCurrency } from '../../utils/Currency';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import axios from 'axios';
 
+const baseUrl = `http://localhost:3000/api/trash-master`;
 
-const DataTable = ({trashType}) => {
+const DataTable = ({data, type}) => {
     const navigate = useNavigate();
 
-    const rows = dataset3[trashType].map((item, idx) => {
-      return {
-        id: idx+1,
-        trashCode: item.code,
-        trashType: trashType,
-        trashName: item.name,
-        trashFee: formatCurrency(`${item.fee}`)
-      }
-    });
+    const rows = data.map((item, key) => {
+        return {
+            id: key+1,
+            trashCode: item.code,
+            trashType: type,
+            trashName: item.name,
+            trashFee: formatCurrency(`${item.fee}`)
+        }
+    })
   
     const handleSeeDetail = (id) => {
         console.log("Lihat Detail", id)
@@ -65,6 +67,24 @@ const DataTable = ({trashType}) => {
   }
 
 const ListTrashFee = () => {
+    const [dataset, setDataset] = useState();
+    useEffect(() => {
+        const fetchData = async() => {
+            const res = await axios.get(`${baseUrl}`)
+            if (res.data) {
+            const temp = res.data.map((item) => {
+                return {
+                    id: item._id,
+                    type: item.type,
+                    data: item.data
+                }
+            })
+            setDataset(temp);  
+            }
+        }
+        fetchData();
+    }, [])
+    
     const [value, setValue] = useState('plastik');
 
     const handleChange = (event, newValue) => {
@@ -110,18 +130,17 @@ const ListTrashFee = () => {
                 borderRadius: '20px',
             }}
         >
-        {dataset1.detail.map((item, key) => {
+        {dataset?.map((item, key) => {
             return(
-                <Tab id={key} value={item.label} label={item.label}/>
+                <Tab id={key} value={item.type} label={item.type}/>
             );
         })}
 
         </Tabs>
-            {dataset1.detail.map((item, key) => {
-                const currData = dataset3[item.label];
+            {dataset?.map((item, key) => {
                 return(
-                    <CustomTabPanel value={item.label} index={key} currValue={value}>
-                        <DataTable  trashType={value} />
+                    <CustomTabPanel value={item.type} index={key} currValue={value}>
+                        <DataTable  data={item.data} type={item.type}/>
                     </CustomTabPanel>
                 );
             })}

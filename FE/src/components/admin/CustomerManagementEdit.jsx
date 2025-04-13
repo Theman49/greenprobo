@@ -3,8 +3,6 @@ import { Types, Village } from "../../data/Customers";
 import { useNavigate, useParams} from "react-router-dom";
 import axios from 'axios';
 
-import { Customers } from "../../data/Customers";
-
 export default function CustomerManagementEdit() {
   const [payload, setPayload] = useState({
     name: '',

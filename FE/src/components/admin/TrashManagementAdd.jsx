@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NumericFormat } from "react-number-format";
-import { dataset1 } from "../../data/Trash";
+//import { dataset1 } from "../../data/Trash";
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+
+const baseUrl = `http://localhost:3000/api/trash-master`;
 
 export default function TrashManagementAdd() {
+    const navigate = useNavigate();
     const [payload, setPayload] = useState({
         trashCode: '',
         trashName: '',
@@ -10,14 +15,45 @@ export default function TrashManagementAdd() {
         trashFee: 0
     })
 
-    const handleAdd = () => {
+    const handleAdd = async() => {
         console.log('Add')
         console.log(payload)
+        const req = await axios.post(`${baseUrl}`, {
+            name: payload.trashName,
+            code: payload.trashCode,
+            type: payload.trashType,
+            fee: payload.trashFee,
+          });
+          if(req){
+            console.log('REQ', req)
+            if(req.status == 200){
+              navigate("/admin/dashboard/trash-management"); 
+            }
+          }
     }
 
     const handleChange = (key, e) => {
         setPayload((prevData) => ({...prevData, [key]: e.target.value}))
     }
+
+
+    const [trashType, setTrashType] = useState();
+    useEffect(() => {
+        const fetchData = async() => {
+            const res = await axios.get(`${baseUrl}`)
+            if (res.data) {
+            const temp = res.data.map((item) => {
+                return {
+                    id: item._id,
+                    type: item.type,
+                    data: item.data
+                }
+            })
+            setTrashType(temp);  
+            }
+        }
+        fetchData();
+    }, [])
 
     return( 
         <div>
@@ -46,9 +82,9 @@ export default function TrashManagementAdd() {
                             <p className="text-xl">Jenis Sampah</p>
                             <select value={payload.trashType} onChange={(e) => handleChange('trashType', e)} className="w-full">
                                 <option value="--">--Jenis Sampah--</option>
-                                {dataset1.detail.map((item, key) => {
+                                {trashType?.map((item, key) => {
                                     return(
-                                        <option id={key} value={item.label}>{item.label}</option>
+                                        <option id={key} value={item.type}>{item.type}</option>
                                     )
                                 })}
                             </select>

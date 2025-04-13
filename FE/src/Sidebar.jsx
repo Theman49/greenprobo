@@ -47,18 +47,24 @@ export default function Sidebar() {
         <div className="flex flex-col gap-4">
           <p>Menu</p>
           <div className="flex flex-col gap-2">
-            {menus.map(({ path, label, icon }) => (
+            {menus.map(({ path, label, icon }) => {
+              const splitted = pathname.split('/')
+              const idxLast = splitted.indexOf('dashboard')+1
+              const lastPath = splitted[idxLast]
+              console.log(lastPath)
+              return(
               <NavLink
                 key={path}
                 to={path}
                 className={`flex items-center gap-2 rounded-full px-3 py-2 hover:bg-white hover:text-green-900 transition-all duration-200 ${
+                  path.includes(lastPath) ? 'bg-white text-green-900' : 
                   pathname === path ? 'bg-white text-green-900' : ''
                 }`}
               >
                 <div className="flex items-center justify-center w-[20px] h-[20px]">{icon}</div>
                 <p className="font-semibold text-base">{label}</p>
               </NavLink>
-            ))}
+            )})}
           </div>
         </div>
       </div>
