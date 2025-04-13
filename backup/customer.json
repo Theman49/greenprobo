@@ -1,0 +1,4 @@
+{"_id":{"$oid":"67faabfa34e6083494fd3faa"},"code":"029","name":"Budi Prakoso","type":"Sekolah","address":"Probolinggo","village":"Tanjungrejo","whatsapp":"082358291812","username":"budi","password":"budi"}
+{"_id":{"$oid":"67faabfa34e6083494fd3fab"},"code":"030","name":"Tugiman","type":"Instansi","address":"Probolinggo","village":"Sukorejo","whatsapp":"082358291812","username":"tugiman","password":"tugiman"}
+{"_id":{"$oid":"67fab2ff34e6083494fd3fac"},"code":"028","name":"Artena Nagara","type":"individu","address":"Probolinggo","village":"Sumbersekar","whatsapp":"082260840196","username":"artenanagara","password":"artenanagara"}
+{"_id":{"$oid":"67fc11aee48c9e4fbb44f091"},"code":"031","name":"Sasuke Uchiha","type":"individu","address":"Konoha","village":"Kebonsari","whatsapp":"0938098"}
