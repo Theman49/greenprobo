@@ -1,5 +1,6 @@
 export const Customers = [
     {
+        id: '1',
         code: '028',
         name: 'Artena Nagara',
         type: 'individu',
@@ -10,6 +11,7 @@ export const Customers = [
         password: 'artenanagara',
     },
     {
+        id: '2',
         code: '029',
         name: 'Budi Prakoso',
         type: 'Sekolah',
@@ -20,6 +22,7 @@ export const Customers = [
         password: 'budi',
     },
     {
+        id: '3',
         code: '030',
         name: 'Tugiman',
         type: 'Instansi',

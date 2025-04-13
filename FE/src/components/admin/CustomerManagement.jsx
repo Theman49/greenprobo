@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
-import { Customers } from '../../data/Customers'; 
+import { Customers } from '../../data/Customers';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -54,7 +54,7 @@ export default function CustomerManagementTable() {
       }
     }
     fetchData();
-  }, [])
+  }, [baseUrl])
 
   /*
   const rows = Customers.map((item) => {

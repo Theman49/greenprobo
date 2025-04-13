@@ -23,7 +23,7 @@ const ChartTwo = () => {
 	});
 
 	const scaleSize = 1;
-	const chartHeight = 220;
+	const chartHeight = 250;
 
 	useEffect(() => {
 		if(parentRef.current){
@@ -120,7 +120,7 @@ const ChartOne = () => {
 		paddingInline: 0,
 	});
 
-	const chartHeight = 250;
+	const chartHeight = 350;
 
 	useEffect(() => {
 		if(parentRef.current){
@@ -167,17 +167,17 @@ const ChartOne = () => {
 	  })
 
 	return(
-		<div ref={parentRef} className="flex flex-col justify-between gap-6 p-4 rounded-xl border-1 border-gray-200 w-full">
+		<div ref={parentRef} className="flex flex-col justify-between p-4 rounded-xl border-1 border-gray-200 w-full">
 			<div className="flex justify-between items-center rounded-xl">
-				<p className="text-xl">Pengeluaran</p>
+				<p className="text-xl font-medium">Pengeluaran</p>
 				<div className="flex justify-center items-center p-2 rounded-full bg-red-100">
-					<AccountBalanceWalletOutlinedIcon className="w-[15px] h-[15px] text-red-500"/>
+					<AccountBalanceWalletOutlinedIcon className="w-[24px] h-[24px] text-red-500"/>
 				</div>
 			</div>
-			<div className="flex justify-end">			
+			<div className="">			
 				<BarChart
 				colors={[ColorsArr[4]]}
-				dataset={compiledDataset.slice(4,10)}
+				dataset={compiledDataset.slice(6,12)}
 				yAxis={[{ scaleType: 'band', dataKey: 'month' }]}
 				series={[
 					{ dataKey: 'total', label: 'total', valueFormatter },
@@ -197,7 +197,7 @@ export default function Dashboard() {
 		<div>
 			<div className="flex flex-col px-6 py-8 gap-6">
 				<div className="flex flex-col gap-1">
-					<p className="text-xl font-bold">Dashboard</p>
+					<p className="text-3xl font-bold">Dashboard</p>
 					<p className="text-gray-500">Detail lengkap riwayat penyetoran sampah Anda</p>
 				</div>
 				<div className="bg-gray-200 h-[1px]"></div>

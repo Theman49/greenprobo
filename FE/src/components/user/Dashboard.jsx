@@ -194,7 +194,7 @@ export default function Dashboard() {
 		<div>
 			<div className="flex flex-col px-6 py-8 gap-6">
 				<div className="flex flex-col gap-1">
-					<p className="text-xl font-bold">Dashboard Nasabah</p>
+					<p className="text-3xl font-bold">Dashboard Nasabah</p>
 					<p className="text-gray-500">Halo Nasabah!</p>
 				</div>
 				<div className="bg-gray-200 h-[1px]"></div>

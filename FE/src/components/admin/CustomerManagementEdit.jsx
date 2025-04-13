@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Types, Village } from "../../data/Customers"; 
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams} from "react-router-dom";
 import axios from 'axios';
 
 import { Customers } from "../../data/Customers";
@@ -28,7 +28,7 @@ export default function CustomerManagementEdit() {
       }
     }
     fetchData();
-  }, [id]);
+  }, [id, baseUrl]);
 
   const handleSave = async() => {
     console.log("Save Customer Data:", payload);

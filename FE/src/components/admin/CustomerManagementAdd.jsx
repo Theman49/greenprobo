@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NumericFormat } from "react-number-format";
-import { Types, Village } from "../../data/Customers";
+import { Customers, Types, Village } from "../../data/Customers";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
