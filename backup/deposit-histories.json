@@ -1,0 +1,152 @@
+ [
+  { facturNo: '174/A/12/2024',
+   transactionDate: '20 Desember 2024',
+   customer: 'Artena Nagara',
+   recipient: 'Agus Mulyono',
+   trashAmount: 8.12,
+   income: 48210,
+   data: [
+     {
+    trashType: 'plastik',
+    trashName: 'kresek',
+    trashTotal: 1.48,
+    trashFee: 348
+     }
+   ]
+  },
+  { facturNo: '082/A/12/2024',
+   transactionDate: '3 Desember 2024',
+    customer: 'Artena Nagara',
+     recipient: 'Agus Mulyono',
+      trashAmount: 8.12,
+       income: 34900,
+       data: [
+          {
+        trashType: 'plastik',
+        trashName: 'kresek',
+        trashTotal: 1.48,
+        trashFee: 348
+          }
+       ]
+       },
+  { facturNo: '041/A/11/2024',
+   transactionDate: '29 November 2024',
+    customer: 'Artena Nagara',
+     recipient: 'Andi Setiawan',
+      trashAmount: 8.12,
+       income: 53900,
+       data: [
+          {
+        trashType: 'plastik',
+        trashName: 'kresek',
+        trashTotal: 1.48,
+        trashFee: 348
+          }
+       ]
+       },
+  { facturNo: '010/A/11/2024',
+   transactionDate: '12 November 2024',
+    customer: 'Artena Nagara',
+     recipient: 'Agus Mulyono',
+      trashAmount: 8.12,
+       income: 12930,
+       data: [
+          {
+        trashType: 'plastik',
+        trashName: 'kresek',
+        trashTotal: 1.48,
+        trashFee: 348
+          }
+       ]
+       },
+  { facturNo: '026/A/09/2024',
+   transactionDate: '1 September 2024',
+    customer: 'Artena Nagara',
+     recipient: 'Tugiman',
+      trashAmount: 8.12,
+       income: 50305,
+       data: [
+          {
+        trashType: 'plastik',
+        trashName: 'kresek',
+        trashTotal: 1.48,
+        trashFee: 348
+          }
+       ]
+       },
+  { facturNo: '175/A/12/2024',
+   transactionDate: '20 Desember 2024',
+    customer: 'Artena Nagara',
+     recipient: 'Agus Mulyono',
+      trashAmount: 8.12,
+       income: 48210,
+       data: [
+          {
+        trashType: 'plastik',
+        trashName: 'kresek',
+        trashTotal: 1.48,
+        trashFee: 348
+          }
+       ]
+       },
+  { facturNo: '083/A/12/2024',
+   transactionDate: '3 Desember 2024',
+    customer: 'Artena Nagara',
+     recipient: 'Agus Mulyono',
+      trashAmount: 8.12,
+       income: 34900,
+       data: [
+          {
+        trashType: 'plastik',
+        trashName: 'kresek',
+        trashTotal: 1.48,
+        trashFee: 348
+          }
+       ]
+       },
+  { facturNo: '042/A/11/2024',
+   transactionDate: '29 November 2024',
+    customer: 'Artena Nagara',
+     recipient: 'Andi Setiawan',
+      trashAmount: 8.12,
+       income: 53900,
+       data: [
+          {
+        trashType: 'plastik',
+        trashName: 'kresek',
+        trashTotal: 1.48,
+        trashFee: 348
+          }
+       ]
+       },
+  { facturNo: '011/A/11/2024',
+      transactionDate: '12 November 2024',
+       customer: 'Artena Nagara',
+        recipient: 'Agus Mulyono',
+         trashAmount: 8.12,
+          income: 12930 ,
+       data: [
+          {
+        trashType: 'plastik',
+        trashName: 'kresek',
+        trashTotal: 1.48,
+        trashFee: 348
+          }
+       ]
+     },
+  { facturNo: '027/A/09/2024',
+      transactionDate: '1 September 2024',
+       customer: 'Artena Nagara',
+        recipient: 'Tugiman',
+         trashAmount: 8.12,
+          income: 50305,
+       data: [
+          {
+        trashType: 'plastik',
+        trashName: 'kresek',
+        trashTotal: 1.48,
+        trashFee: 348
+          }
+       ]
+     },
+]

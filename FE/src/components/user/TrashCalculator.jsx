@@ -2,10 +2,13 @@ import {useState, useEffect, useRef} from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { ColorsArr } from '../../utils/Colors';
-import {dataset1, dataset3} from '../../data/Trash';
+//import {dataset1, dataset3} from '../../data/Trash';
 import { NumericFormat } from 'react-number-format';
+import axios from 'axios';
 
-const Calculator = () => {
+const baseUrl = 'http://localhost:3000/api/trash-master';
+
+const Calculator = ({dataset}) => {
     const parentEl = useRef(null);
 
     const RowItem = ({idx}) => {
@@ -17,7 +20,7 @@ const Calculator = () => {
 
         useEffect(() => {
             console.log('CHANGED TRASH TYPE', trashType);
-            setListTrash(dataset3[trashType])
+            setListTrash((dataset?.filter((item) => item.type === trashType))[0]?.data)
             if(trashType === '--'){
                 setResult('')
             }
@@ -34,7 +37,7 @@ const Calculator = () => {
         const calcResult = () => {
             //const total = document.getElementById(`total${idx}`).value
             const total = rTotal.current.value
-            const trash = dataset3[trashType]?.filter((item) => item.code === trashCode)[0]
+            const trash = dataset.filter((item) => item.type === trashType)[0]?.data?.filter((item) => item.code === trashCode)[0]
             console.log("TRASH", trash)
             console.log("total", total)
             const tempResult = parseFloat(trash?.fee) * parseFloat(total)
@@ -56,9 +59,9 @@ const Calculator = () => {
             <div id={`row${idx}`} className="flex gap-2 w-full">
                 <select value={trashType} onChange={handleChange} className="w-full">
                     <option value="--">--Jenis Sampah--</option>
-                    {dataset1.detail.map((item, key) => {
+                    {dataset?.map((item, key) => {
                         return(
-                            <option id={key} value={item.label}>{item.label}</option>
+                            <option id={key} value={item.type}>{item.type}</option>
                         )
                     })}
                 </select>
@@ -86,10 +89,10 @@ const Calculator = () => {
     }
 
     const [wrapper, setWrapper] = useState([
-        {
-            id: Date.now(),
-            content: <RowItem idx={Date.now()}  />
-        }
+        // {
+        //     id: Date.now(),
+        //     content: <RowItem idx={Date.now()}  />
+        // }
     ]);
 
     const [grandTotal, setGrandTotal] = useState(0);
@@ -197,7 +200,8 @@ const Calculator = () => {
     )
 }
 
-const ListTrashFee = () => {
+const ListTrashFee = ({dataset}) => {
+    console.log('dataset', dataset)
     const [value, setValue] = useState('plastik');
 
     const handleChange = (event, newValue) => {
@@ -205,6 +209,7 @@ const ListTrashFee = () => {
     };
 
     const CustomTabPanel = ({ children, value, index, currValue }) => {
+        console.log('currvalue', currValue)
         return(
             <div
                 role="tabpanel"
@@ -243,17 +248,19 @@ const ListTrashFee = () => {
                 borderRadius: '20px',
             }}
         >
-        {dataset1.detail.map((item, key) => {
+        {dataset?.map((item, key) => {
+            console.log('item', item)
             return(
-                <Tab id={key} value={item.label} label={item.label}/>
+                <Tab id={key} value={item.type} label={item.type}/>
             );
         })}
 
         </Tabs>
-            {dataset1.detail.map((item, key) => {
-                const currData = dataset3[item.label];
+            {dataset?.map((item, key) => {
+                const currData = item.data;
+                console.log('currData', currData)
                 return(
-                    <CustomTabPanel value={item.label} index={key} currValue={value}>
+                    <CustomTabPanel value={item.type} index={key} currValue={value}>
                         <table className="overflow-hidden rounded-t-xl w-full">
                             <thead>
                                 <tr className="bg-gray-300">
@@ -282,6 +289,24 @@ const ListTrashFee = () => {
 }
 
 export default function TrashCalculator(){
+    const [dataset, setDataset] = useState([]);
+    useEffect(() => {
+        const fetchData = async() => {
+            const res = await axios.get(`${baseUrl}`)
+            if (res.data) {
+            const temp = res.data.map((item) => {
+                return {
+                    id: item._id,
+                    type: item.type,
+                    data: item.data
+                }
+            })
+            setDataset(temp);  
+            }
+        }
+        fetchData();
+    }, [])
+
     return(
         <div>
 			<div className="flex flex-col px-6 py-8 gap-6">
@@ -296,12 +321,12 @@ export default function TrashCalculator(){
                 <div className="flex flex-col gap-6 p-4 rounded-xl border-1 border-gray-200 w-2/3 h-fit">
                     <p className="text-xl font-bold">Kalkulator Sampah</p>
                     <div className="flex gap-2 w-full">
-                        <Calculator />
+                        <Calculator dataset={dataset}/>
                     </div>
                 </div>
                 <div className="flex flex-col gap-6 p-4 rounded-xl border-1 border-gray-200 w-1/3">
                     <p className="text-xl font-bold">Daftar Harga Sampah</p>
-                    <ListTrashFee />
+                    <ListTrashFee dataset={dataset}/>
                 </div>
             </div>
         </div>

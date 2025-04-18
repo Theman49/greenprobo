@@ -1,6 +1,6 @@
 import {useState, useRef, useEffect} from 'react';
-import { dataset1, dataset3, dataset4, dataset5 } from "../../data/Trash"
-import { Customers, Types } from "../../data/Customers";
+//import { dataset1, dataset3, dataset4, dataset5 } from "../../data/Trash"
+//import { Customers, Types } from "../../data/Customers";
 import { useParams, NavLink, useNavigate } from "react-router-dom"
 import NotFound from "../NotFound";
 import { NumericFormat } from "react-number-format";
@@ -11,9 +11,11 @@ import EditSquareIcon from '@mui/icons-material/EditSquare';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns'
+import axios from 'axios';
 
+const baseUrl = 'http://localhost:3000/api';
 
-const Calculator = ({handler, prevData}) => {
+const Calculator = ({handler, prevData, dataset}) => {
     const parentEl = useRef(null);
 
     const RowItem = ({idx, calcGrandTotal, prevData}) => {
@@ -27,7 +29,7 @@ const Calculator = ({handler, prevData}) => {
 
         useEffect(() => {
             console.log('CHANGED TRASH TYPE', trashType);
-            setListTrash(dataset3[trashType])
+            setListTrash(dataset?.filter((item) => item.type === trashType)[0]?.data)
             if(trashType === '--'){
                 setResult(0)
             }
@@ -47,7 +49,7 @@ const Calculator = ({handler, prevData}) => {
         }
         const calcResult = () => {
             const total = trashAmount 
-            const trash = dataset3[trashType]?.filter((item) => item.code === trashCode)[0]
+            const trash = dataset?.filter((item) => item.type === trashType)[0]?.data.filter((item) => item.code === trashCode)[0]
             if(trash){
                 console.log("TRASH", trash)
                 console.log("total", total)
@@ -57,11 +59,11 @@ const Calculator = ({handler, prevData}) => {
             }else{
                 setResult(0)
             }
+            calcGrandTotal()
         }
 
         useEffect(() => {
             calcResult()
-            calcGrandTotal()
         }, [trashType, trashCode, listTrash, trashAmount ])
 
 
@@ -70,9 +72,9 @@ const Calculator = ({handler, prevData}) => {
             <div id={`row${idx}`} className="flex gap-2 w-full">
                 <select value={trashType} onChange={handleChange} className="w-full" id={`trashType${idx}`}>
                     <option value="--">--Jenis Sampah--</option>
-                    {dataset1.detail.map((item, key) => {
+                    {dataset?.map((item, key) => {
                         return(
-                            <option id={key} value={item.label}>{item.label}</option>
+                            <option id={key} value={item.type}>{item.type}</option>
                         )
                     })}
                 </select>
@@ -102,33 +104,41 @@ const Calculator = ({handler, prevData}) => {
     const [totalIncome, setTotalIncome] = useState(0);
 
     const calculateGrandTotal = () => {
-            const wrapperEl = parentEl.current
-            const totals = Array.from(wrapperEl.querySelectorAll('input[id^="total"]'))
-            const incomes = Array.from(wrapperEl.querySelectorAll('input[id^="result"]'))
+            setTimeout(() => {
+                const wrapperEl = parentEl.current
+                const totals = Array.from(wrapperEl.querySelectorAll('input[id^="total"]'))
+                const incomes = Array.from(wrapperEl.querySelectorAll('input[id^="result"]'))
 
-            const totalValues = [];
-            totals.forEach((item) => {
-                const temp = parseFloat((item.value).replaceAll(/,/g,""));
-                totalValues.push(temp)
-            })
+                console.log("INCOMES", incomes)
 
-            const incomeValues = [];
-            incomes.forEach((item) => {
-                const temp = parseFloat((item.value).replaceAll(/,/g,""));
-                incomeValues.push(temp)
-            })
-            const tempTotals = totalValues.reduce((total, item) => total + item)
-            const tempTotalIncome = incomeValues.reduce((total, item) => total + item)
-            setGrandTotal(tempTotals)
-            setTotalIncome(tempTotalIncome)
-            handler.grandTotal({
-                trashTotal: tempTotals,
-                trashFee: tempTotalIncome,
-            })
-            console.log("ALKDJLK", {
-                trashTotal: tempTotals,
-                trashFee: tempTotalIncome,
-            })
+                const totalValues = [];
+                totals.forEach((item) => {
+                    console.log('item total', item.innerText)
+                    const temp = parseFloat((item.value).replaceAll(/,/g,""));
+                    totalValues.push(temp)
+                })
+
+                const incomeValues = [];
+                incomes.forEach((item) => {
+                    console.log('item income', item.value)
+                    const temp = parseFloat((item.value).replaceAll(/,/g,""));
+                    incomeValues.push(temp)
+                })
+
+                const tempTotals = totalValues.reduce((total, item) => total + item)
+                const tempTotalIncome = incomeValues.reduce((total, item) => total + item)
+                // setGrandTotal(tempTotals)
+                // setTotalIncome(tempTotalIncome)
+                console.log("ALKDJLK", {
+                    trashTotal: tempTotals,
+                    trashFee: tempTotalIncome,
+                })
+                handler.grandTotal({
+                    trashTotal: tempTotals,
+                    trashFee: tempTotalIncome,
+                })
+
+            }, 100)
     }
 
 
@@ -142,10 +152,12 @@ const Calculator = ({handler, prevData}) => {
             })
         ] :
         [
+            /*
         {
             id: Date.now(),
             content: <RowItem idx={Date.now()} calcGrandTotal={calculateGrandTotal}  />
         }
+        */
         ]
     );
 
@@ -224,6 +236,40 @@ const Calculator = ({handler, prevData}) => {
 }
 
 export default function ReceiptHistoryDetail() {
+    const [trashMaster, setTrashMaster] = useState([]);
+    const [customers, setCustomers] = useState([]);
+    const [customer, setCustomer] = useState({});
+    useEffect(() => {
+        const fetchDataTrashMaster = async() => {
+            const res = await axios.get(`${baseUrl}/trash-master`)
+            if (res.data) {
+            const temp = res.data.map((item) => {
+                return {
+                    id: item._id,
+                    type: item.type,
+                    data: item.data
+                }
+            })
+            setTrashMaster(temp);  
+            }
+        }
+        const fetchDataCustomers = async() => {
+            const res = await axios.get(`${baseUrl}/customers`)
+            if (res.data) {
+            const temp = res.data.map((item) => {
+                return {
+                    id: item._id,
+                    code: item.code,
+                    name: item.name,
+                    type: item.type,
+                }
+            })
+            setCustomers(temp);  
+            }
+        }
+        fetchDataTrashMaster();
+        fetchDataCustomers();
+    }, [])
 
     const [isPreview, setIsPreview] = useState(false);
     const [transactionDate, setTransactionDate] = useState(new Date());
@@ -231,19 +277,20 @@ export default function ReceiptHistoryDetail() {
         trashTotal: 0,
         trashFee: 0,
     })
-    const [customer, setCustomer] = useState({});
     const [data, setData] = useState([
+        /*
         {
             trashType: '--',
             trashCode: '--',
             totalAmount: 0,
             totalFee: 0,
         }
+            */
     ]);
 
     const handleChooseCustomer = (event) => {
         const code = event.target.value;
-        const temp = Customers.filter((item) => item.code === code)[0]; 
+        const temp = customers?.filter((item) => item.code === code)[0]; 
         console.log(code, temp)
         setCustomer(temp)
     }
@@ -257,7 +304,7 @@ export default function ReceiptHistoryDetail() {
             const trashCode =  item.querySelector('select[id^="trashCode"]').value;
             const trashTotal =  item.querySelector('input[id^="total"]').value;
             const trashFee =  parseFloat((item.querySelector('input[id^="result"]').value).replaceAll(',', ''));
-            const trashName = dataset3[trashType].filter((item) => item.code === trashCode)[0].name; 
+            const trashName = trashMaster?.filter((item) => item.type === trashType)[0]?.data.filter((item) => item.code === trashCode)[0].name; 
 
 
             console.log(trashType, trashCode, trashTotal, trashFee)
@@ -280,6 +327,14 @@ export default function ReceiptHistoryDetail() {
         })
         setData(tempData)
         setIsPreview(true)
+    }
+
+    const handleSend = () => {
+        console.log({
+            message: 'KIRIM NOTA',
+            trash: data,
+            customer: customer
+        })
     }
     
     const handleEdit = () => {
@@ -310,9 +365,9 @@ export default function ReceiptHistoryDetail() {
                         <div className="flex flex-col gap-2">
                             <div className="flex flex-col gap-1">
                                 <p className="text-xl">Kode Nasabah</p>
-                                <select onChange={handleChooseCustomer} className="p-3 rounded-lg border-1 border-gray-300 w-full">
+                                <select onChange={handleChooseCustomer} className="p-3 rounded-lg border-1 border-gray-300 w-full" value={customer ? customer.code : "--"}>
                                     <option value="--">-- Pilih Kode Nasabah --</option>
-                                    {Customers.map((item) => {
+                                    {customers?.map((item) => {
                                         return(
                                             <option value={item.code}>{item.code}</option>
                                         )
@@ -376,7 +431,7 @@ export default function ReceiptHistoryDetail() {
                                 <p className="text-xl">Daftar Terima Sampah</p>
                                 {!isPreview ?
                                 <div>
-                                    <Calculator handler={{grandTotal: setCalcResult, reset: reset}} prevData={data}/>
+                                    <Calculator handler={{grandTotal: setCalcResult, reset: reset}} prevData={data} dataset={trashMaster}/>
                                 </div>
                                 :
                                 <table className="overflow-hidden rounded-t-lg w-full">
@@ -429,7 +484,7 @@ export default function ReceiptHistoryDetail() {
                             <div onClick={handleEdit} className="flex gap-2 items-center px-8 py-4 justify-center rounded-full border-1 text-green-900  hover:cursor-pointer">
                                 <EditSquareIcon sx={{width: '20px', height: '20px'}}/> <p className='text-base font-bold'>Edit</p>
                             </div>
-                            <div onClick={handlePreview} className="flex gap-2 items-center px-4 py-4 justify-center rounded-full border-1 bg-green-900 text-white hover:cursor-pointer">
+                            <div onClick={handleSend} className="flex gap-2 items-center px-4 py-4 justify-center rounded-full border-1 bg-green-900 text-white hover:cursor-pointer">
                                <ShareIcon  sx={{width: '24px', height: '24px'}}/> <p className='text-base font-semibold'>Kirim Nota</p>
                             </div>
                         </div>
