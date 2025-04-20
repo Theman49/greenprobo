@@ -12,6 +12,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns'
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const baseUrl = 'http://localhost:3000/api';
 
@@ -239,6 +240,7 @@ export default function ReceiptHistoryDetail() {
     const [trashMaster, setTrashMaster] = useState([]);
     const [customers, setCustomers] = useState([]);
     const [customer, setCustomer] = useState({});
+    const getSession = useSelector((state) => state.session)
     useEffect(() => {
         const fetchDataTrashMaster = async() => {
             const res = await axios.get(`${baseUrl}/trash-master`)
@@ -330,10 +332,11 @@ export default function ReceiptHistoryDetail() {
     }
 
     const handleSend = () => {
+        console.log("GETSESSION", getSession)
         console.log({
             message: 'KIRIM NOTA',
             trash: data,
-            customer: customer
+            customer: customer,
         })
     }
     

@@ -1,15 +1,23 @@
-import { NavLink } from 'react-router-dom';
-import { useState } from 'react';
+import { useNavigate, NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useRef, useState } from 'react';
+import { login } from '../../features/sessionSlice';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import FooterImage from "../../assets/footer-image.svg";
 import Logo from "../../assets/logo.svg";
+import axios from 'axios';
 
+const baseUrl = 'http://localhost:3000/api';
 
 export default function Login() {
 	const [showPass,setShowPass] = useState(false);
+	const usernameRef = useRef(null);
+	const passwordRef = useRef(null);
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const togglePassword = () => {
 		const elPass = document.getElementById('password');
@@ -19,6 +27,32 @@ export default function Login() {
 			setShowPass(false);
 		}
 	}
+
+	const handleSubmit = async() => {
+		console.log({
+			username: usernameRef.current.value,
+			password: passwordRef.current.value,
+		})
+
+		const res = await axios.post(`${baseUrl}/auth`, {
+			username: usernameRef.current.value,
+			password: passwordRef.current.value,
+			type: 'admin'
+		})
+
+		if(res.data.success){
+			dispatch(login({
+				code: res.data.data.code,
+				name: res.data.data.name,
+				isAdmin: true
+			}))
+			navigate('/admin/dashboard')
+		}else{
+			alert(res.data.message)
+		}
+
+	}
+
 	return(
 		<div className="flex justify-between">
 			<div id="form" className="flex flex-col">
@@ -38,11 +72,11 @@ export default function Login() {
 			          	<div className="flex flex-col gap-4">
 			          		<div className="flex flex-col">
 				          		<p>ID Pengguna</p>
-				          		<input className="rounded p-2 border-1 border-gray-300 placeholder:text-gray-400" placeholder="Masukkan nomor id anda"/>
+				          		<input ref={usernameRef} className="rounded p-2 border-1 border-gray-300 placeholder:text-gray-400" id="username" placeholder="Masukkan username anda"/>
 			          		</div>
 			          		<div className="flex flex-col relative">
 				          		<p>Kata Sandi</p>
-				          		<input id="password" type={(showPass) ? 'text' : 'password'} className="w-full rounded p-2 border-1 border-gray-300 placeholder:text-gray-400" placeholder="Masukkan kata sandi"/>
+				          		<input ref={passwordRef} id="password" type={(showPass) ? 'text' : 'password'} className="w-full rounded p-2 border-1 border-gray-300 placeholder:text-gray-400" placeholder="Masukkan kata sandi"/>
 				          		{
 				          			(showPass === false) ? 
 				          		<VisibilityIcon className="z-100 absolute top-[45%] right-[3%] w-[48px] h-[48px] text-gray-300" onClick={togglePassword}/>
@@ -50,8 +84,8 @@ export default function Login() {
 				          		<VisibilityOffIcon className="z-100 absolute top-[45%] right-[3%] w-[48px] h-[48px] text-gray-300" onClick={togglePassword}/>
 					          	}
 			          		</div>
-			          		<button className="hover:cursor-pointer bg-green-900 text-white rounded-full w-full p-3">
-							  <NavLink to="/admin/dashboard">Masuk</NavLink>
+			          		<button className="hover:cursor-pointer bg-green-900 text-white rounded-full w-full p-3 hover:cursor-pointer" onClick={handleSubmit}>
+							  Masuk
 							</button>
 							<a href="/login" className="text-green-900 underline text-center">Masuk sebagai Nasabah</a>
 			          	</div>

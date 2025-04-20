@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 import {
   GridView as GridViewIcon,
   CalculateOutlined as CalculateIcon,
@@ -10,9 +10,14 @@ import {
   DeleteOutlined as DeleteIcon,
 } from '@mui/icons-material';
 import Logo from './assets/LogoDashboard.svg';
+import { logout } from './features/sessionSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
 export default function Sidebar() {
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
+  const getSession = useSelector((state) => state.session);
+  const navigate = useNavigate();
   const isAdmin = pathname.includes('admin/dashboard');
 
   const userMenus = [
@@ -33,6 +38,13 @@ export default function Sidebar() {
   ];
 
   const menus = isAdmin ? adminMenus : userMenus;
+
+  const handleLogout = () => {
+    dispatch(logout());
+    alert('Berhasil Logout')
+    navigate('/login')
+  }
+
 
   return (
     <div className="flex flex-col justify-between rounded-r-2xl bg-green-900 p-6 min-h-full text-white">
@@ -72,12 +84,12 @@ export default function Sidebar() {
       {/* Footer */}
       <div className="flex flex-col bg-white rounded-md p-3 gap-5 text-green-900">
         <div>
-          <p className="text-xl font-bold text-black">Artena Nagara</p>
+          <p className="text-xl font-bold text-black">{getSession.name}</p>
           <p className="text-gray-700 font-medium">Individu</p>
         </div>
-        <div className="flex gap-2 items-center text-red-500">
+        <div className="flex gap-2 items-center text-red-500 hover:cursor-pointer" onClick={handleLogout}>
           <LogoutIcon />
-          <NavLink to="/logout">Keluar</NavLink>
+          Keluar
         </div>
       </div>
     </div>
