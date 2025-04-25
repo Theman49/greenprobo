@@ -13,6 +13,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns'
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { Types } from '../../data/Customers';
 
 const baseUrl = 'http://localhost:3000/api';
 
@@ -241,6 +242,14 @@ export default function ReceiptHistoryDetail() {
     const [customers, setCustomers] = useState([]);
     const [customer, setCustomer] = useState({});
     const getSession = useSelector((state) => state.session)
+    const [isPreview, setIsPreview] = useState(false);
+    const [transactionDate, setTransactionDate] = useState(new Date());
+    const [transactionNoFactur, setTransactionNoFactur] = useState('026/A/09/2024');
+    const [calcResult, setCalcResult] = useState({
+        trashTotal: 0,
+        trashFee: 0,
+    })
+
     useEffect(() => {
         const fetchDataTrashMaster = async() => {
             const res = await axios.get(`${baseUrl}/trash-master`)
@@ -273,12 +282,6 @@ export default function ReceiptHistoryDetail() {
         fetchDataCustomers();
     }, [])
 
-    const [isPreview, setIsPreview] = useState(false);
-    const [transactionDate, setTransactionDate] = useState(new Date());
-    const [calcResult, setCalcResult] = useState({
-        trashTotal: 0,
-        trashFee: 0,
-    })
     const [data, setData] = useState([
         /*
         {
@@ -323,21 +326,47 @@ export default function ReceiptHistoryDetail() {
                 trashType: trashType,
                 trashCode: trashCode,
                 name: trashName,
-                totalAmount: trashTotal,
+                totalAmount: parseFloat(trashTotal),
                 totalFee: trashFee,
             }
         })
         setData(tempData)
+        const generateFactur = () => {
+            const id = Types.filter((item) => item.name.toLowerCase() == customer.type.toLowerCase())[0].id
+            const month = format(transactionDate, 'MM');
+            const year = format(transactionDate, "yyyy");
+            setTransactionNoFactur(`${id}/${month}/${year}`);
+        }
+        generateFactur();
         setIsPreview(true)
     }
 
-    const handleSend = () => {
+    const handleSend = async() => {
         console.log("GETSESSION", getSession)
-        console.log({
-            message: 'KIRIM NOTA',
+
+        const transaction = {
+            // date: format(transactionDate, 'dd MMMM yyyy'),
+            date: transactionDate,
+            noFactur: transactionNoFactur,
+            type: transactionNoFactur.split('/')[0],
+            month: transactionNoFactur.split('/')[1],
+            year: transactionNoFactur.split('/')[2],
+            totalTrash: calcResult.trashTotal, 
+            totalFee: calcResult.trashFee, 
+        }
+        const body = ({
             trash: data,
             customer: customer,
+            admin: {
+                code: getSession.code,
+                name: getSession.name
+            },
+            transaction: transaction 
         })
+        console.log(body)
+
+        const res = await axios.post(`${baseUrl}/deposit-histories`, body)
+        console.log("KIRIM NOTA", res)
     }
     
     const handleEdit = () => {
@@ -385,10 +414,14 @@ export default function ReceiptHistoryDetail() {
                                 <p className="text-xl">Jenis Nasabah</p>
                                 <p className="p-3 rounded-lg border-1 bg-gray-100 border-gray-300 text-gray-500 w-full">{customer?.type}</p>
                             </div>
+                            {
+                                /*
                             <div className="flex flex-col gap-1">
                                 <p className="text-xl">No. Faktur</p>
-                                <input type="text" value="003/A/12/2025"className="p-3 rounded-lg border-1 border-gray-300 text-gray-500 w-full" readonly/>
+                                <input type="text" value={transactionNoFactur} className="p-3 rounded-lg border-1 border-gray-300 text-gray-500 w-full" readonly/>
                             </div>
+                                */
+                            }
                             <div className="flex flex-col gap-1">
                                 <p className="text-xl">Tanggal Terima</p>
                                 <div className="p-3 rounded-lg border-1 border-gray-300 text-gray-500 w-full">
@@ -419,7 +452,7 @@ export default function ReceiptHistoryDetail() {
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <p className="text-xl">No. Faktur</p>
-                                    <p className="text-gray-500">003/A/12/2025</p>
+                                    <p className="text-gray-500">---/{transactionNoFactur}</p>
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <p className="text-xl">Tanggal Terima</p>
