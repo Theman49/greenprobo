@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import Logo from '../assets/Logo.svg';
+import Logo from '../assets/logo.svg';
 
 const handleClick = (event) => {
   const el = document.querySelector(`#${event.target.getAttribute('data-ref')}`);

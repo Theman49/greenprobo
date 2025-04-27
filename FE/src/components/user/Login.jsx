@@ -31,6 +31,10 @@ export default function Login() {
 		}
 	}
 
+	const handleAdmin = () => {
+		navigate('/admin/login')
+	}
+
 	const handleSubmit = async() => {
 		console.log({
 			username: usernameRef.current.value,
@@ -89,7 +93,7 @@ export default function Login() {
 			          		<button className="hover:cursor-pointer bg-green-900 text-white rounded-full w-full p-3 hover:cursor-pointer" onClick={handleSubmit}>
 							  Masuk
 							</button>
-							<a href="/admin/login" className="text-green-900 underline text-center">Masuk sebagai Admin</a>
+							<p onClick={handleAdmin} className="text-green-900 underline text-center hover:cursor-pointer">Masuk sebagai Admin</p>
 			          	</div>
 			        </div>
 

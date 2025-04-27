@@ -8,4 +8,10 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  base: "/",
+  preview: {
+    port: 4173, // You can change the port if needed
+    open: true,
+    historyApiFallback: true, // Ensure this is true for SPA routing
+  },
 })
