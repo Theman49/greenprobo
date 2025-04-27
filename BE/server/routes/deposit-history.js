@@ -11,16 +11,84 @@ import { ObjectId } from "mongodb";
 // The router will be added as a middleware and will take control of requests starting with path /record.
 const router = express.Router();
 
+// This section will help you delete a record by id.
+router.delete("/deposit-histories/:id", async (req, res) => {
+  try {
+    const filter = { _id: new ObjectId(req.params.id) };
 
-// This section will help you create a new record.
+    let collection = await db.collection("depositHistories");
+    let result = await collection.deleteOne(filter);
+    res.send(result).status(200);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error deleting record customers");
+  }
+});
+
+// This section will help you update a record by id.
+router.patch("/deposit-histories-edit/:id", async (req, res) => {
+  try {
+    const filter = { _id: new ObjectId(req.params.id) };
+
+    let collection = await db.collection("depositHistories");
+    let find = await collection.find(filter).toArray();
+    console.log(find)
+    console.log(req.body)
+
+    if(req.body.isAdmin && req.body.code === find[0].admin.code){
+      let resDelete = await collection.deleteOne(filter);
+      let result = await collection.insertOne(req.body.payload)
+      res.send(result).status(200);
+    }else{
+      res.status(500).send("Error updating record deposit history");
+    }
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error updating record deposit history");
+  }
+});
+
+router.post("/deposit-histories-detail", async (req, res) => {
+  try {
+    let filter = {
+      "transaction.noFactur": req.body.noFactur,
+    };
+    if(req.body.isAdmin){
+      filter["admin.code"] = req.body.code
+    }else{
+      filter["customer.code"] = req.body.code
+    }
+    const data = await db.collection('depositHistories').
+                  find(filter).
+                  toArray();
+    
+    console.log("DATA", data)
+
+    res.send(data).status(200);
+  }catch(err){
+    console.error(err);
+    res.status(500).send("Error getting record");
+  }
+});
+
+
+// This section will help you get record for index.
 router.post("/deposit-histories-index", async (req, res) => {
   try {
+    let filter = {
+      "customer.code": req.body.code
+    };
+    if(req.body.isAdmin){
+      filter = {
+        "admin.code": req.body.code,
+      }
+    }
     const data = await db.collection('depositHistories').
-                  find({
-                    "recipient.code": req.body.recipient.code,
-                  }).
+                  find(filter).
                   toArray();
 
+    console.log(data, req.body)
     res.send(data).status(200);
   }catch(err){
     console.error(err);
