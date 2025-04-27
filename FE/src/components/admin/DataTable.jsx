@@ -76,7 +76,8 @@ export default function DataTable() {
   useEffect(() => {
     const fetchData = async() => {
       const res = await axios.post(`${baseUrl}/deposit-histories-index`, {
-        recipient: getSession.code
+        isAdmin: getSession.isAdmin,
+        code: getSession.code
       })
 
       if(res.status == 200){

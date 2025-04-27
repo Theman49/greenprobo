@@ -1,19 +1,51 @@
-import * as React from 'react';
+import {useState, useEffect} from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
-import { dataset4 } from '../../data/Trash';
+// import { dataset4 } from '../../data/Trash';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { formatCurrency } from '../../utils/Currency';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import {format} from 'date-fns';
+
+const baseUrl = 'http://localhost:3000/api';
 
 export default function DataTable() {
+  const getSession = useSelector((state) => state.session);
+  const [data, setData] = useState([]);
   const navigate = useNavigate();
 
   const handleSeeDetail = (id) => {
       console.log("Lihat Detail", id)
-      const facturNo = (dataset4.filter((item) => item.id === id)[0].facturNo).replaceAll(/\//g, "-")
+      const facturNo = (data?.filter((item) => item.id === id)[0].facturNo).replaceAll(/\//g, "-")
       navigate(`/dashboard/deposit-history/detail/${facturNo}`)
   }
+
+  useEffect(() => {
+    const fetchData = async() => {
+      const res = await axios.post(`${baseUrl}/deposit-histories-index`, {
+        isAdmin: getSession.isAdmin,
+        code: getSession.code
+      })
+
+      if(res.status == 200){
+        console.log("FETCH DATA", res.data)
+        const temp = res.data.map((item) => {
+          return {
+            id: item._id,
+            facturNo: item.transaction.noFactur,
+            transactionDate: format(item.transaction.date, 'dd MMMM yyyy'),
+            recipient: item.admin.name,
+            trashAmount: item.transaction.totalTrash,
+            income: formatCurrency(`${item.transaction.totalFee}`)
+          }
+        })
+        setData(temp)
+      }
+    }
+    fetchData();
+  }, [])
 
   const columns = [
     { field: 'facturNo', headerName: 'No. Faktur', width: 200 },
@@ -66,23 +98,13 @@ export default function DataTable() {
     */
   ];
 
-  const rows = dataset4.map((item) => {
-    return {
-      id: item.id,
-      facturNo: item.facturNo,
-      transactionDate: item.transactionDate,
-      recipient: item.recipient,
-      trashAmount: item.trashAmount,
-      income: formatCurrency(`${item.income}`)
-    }
-  });
 
   const paginationModel = { page: 0, pageSize: 5 };
 
   return (
     <Paper sx={{ height: "inherit", width: '100%' }}>
       <DataGrid
-        rows={rows}
+        rows={data}
         columns={columns}
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5, 10]}

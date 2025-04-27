@@ -238,6 +238,7 @@ const Calculator = ({handler, prevData, dataset}) => {
 }
 
 export default function ReceiptHistoryDetail() {
+    const navigate = useNavigate();
     const [trashMaster, setTrashMaster] = useState([]);
     const [customers, setCustomers] = useState([]);
     const [customer, setCustomer] = useState({});
@@ -366,7 +367,11 @@ export default function ReceiptHistoryDetail() {
         console.log(body)
 
         const res = await axios.post(`${baseUrl}/deposit-histories`, body)
-        console.log("KIRIM NOTA", res)
+
+        if(res.status === 200){
+            console.log("KIRIM NOTA", res)
+            navigate("/admin/dashboard/receipt-history");
+        }
     }
     
     const handleEdit = () => {

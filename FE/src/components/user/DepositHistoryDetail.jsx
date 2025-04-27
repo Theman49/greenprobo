@@ -1,18 +1,40 @@
-import { dataset4, dataset5 } from "../../data/Trash"
+// import { dataset4, dataset5 } from "../../data/Trash"
+import {useState, useEffect} from 'react';
 import { useParams } from "react-router-dom"
 import NotFound from "../NotFound";
 import { NumericFormat } from "react-number-format";
 import { formatCurrency } from "../../utils/Currency";
 import Error from "../Error";
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import {format} from 'date-fns';
+
+const baseUrl = 'http://localhost:3000/api';
 
 export default function DepositHistoryDetail() {
+    const getSession = useSelector((state) => state.session);
+    const [data, setData] = useState([]);
     const url = useParams();
     const facturNo = (url.facturNo).replaceAll(/-/g, '/')
-    const data = dataset4.filter((item) => item.facturNo === facturNo)[0];
-    try{
-        const detail = dataset5.filter((item) => item.facturNo === facturNo)[0].detail;
 
-    if(data && detail){
+    useEffect(() => {
+        const fetchData = async() => {
+            const res = await axios.post(`${baseUrl}/deposit-histories-detail`, {
+                isAdmin: getSession.isAdmin,
+                code: getSession.code,
+                noFactur: facturNo
+            })
+            if(res.status === 200){
+                console.log("FETCH DATA", res[0])
+                setData(res.data[0]);
+            }
+        }
+        fetchData();
+    }, []);
+    
+    try{
+
+    if(data){
         return(
             <div>
                 <div className="flex flex-col px-6 py-8 gap-6">
@@ -37,15 +59,15 @@ export default function DepositHistoryDetail() {
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <p className="text-xl">No. Faktur</p>
-                                    <p className="text-gray-500">{data.facturNo}</p>
+                                    <p className="text-gray-500">{data.transaction.noFactur}</p>
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <p className="text-xl">Tanggal Terima</p>
-                                    <p className="text-gray-500">{data.transactionDate}</p>
+                                    <p className="text-gray-500">{format(data.transaction.date, 'dd MMMM yyyy')}</p>
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <p className="text-xl">Penerima</p>
-                                    <p className="text-gray-500">{data.recipient}</p>
+                                    <p className="text-gray-500">{data.admin.name}</p>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +84,7 @@ export default function DepositHistoryDetail() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {detail.map((row, key) => {
+                                        {data.trash.map((row, key) => {
                                             return(
                                                 <tr id={key} className="border-gray-300">
                                                     <td className="p-2">{row.trashType}</td>
@@ -80,11 +102,11 @@ export default function DepositHistoryDetail() {
                                 <div className="flex justify-between gap-4">
                                     <div className="flex flex-col gap-1 w-1/2">
                                         <p>Total Sampah</p>
-                                        <p className="text-gray-500">{data.trashAmount}</p>
+                                        <p className="text-gray-500">{data.transaction.totalTrash}</p>
                                     </div>
                                     <div className="flex flex-col gap-1 w-1/2">
                                         <p>Harga Dibayar</p>
-                                        <p className="text-gray-500"><NumericFormat value={data.income} thousandSeparator={true} prefix="Rp" /></p>
+                                        <p className="text-gray-500"><NumericFormat value={data.transaction.totalFee} thousandSeparator={true} prefix="Rp" /></p>
                                     </div>
                                 </div>
                             </div>

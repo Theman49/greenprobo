@@ -47,7 +47,7 @@ export default function Login() {
 			dispatch(login({
 				code: res.data.data.code,
 				name: res.data.data.name,
-				isAdmin: true
+				isAdmin: false
 			}))
 			navigate('/dashboard')
 		}else{
