@@ -1,2 +1,4 @@
-{"_id":{"$oid":"6804fc457c4167fc895d35a4"},"code":"001","name":"Admin 1","address":"Salatiga","village":"Tanjungrejo","whatsapp":"082358291812","username":"admin1","password":"password"}
-{"_id":{"$oid":"6804fc457c4167fc895d35a5"},"code":"002","name":"Admin 2","address":"Klaten","village":"Sukorejo","whatsapp":"082358291812","username":"admin2","password":"password"}
+[
+{"code":"001","name":"Admin 1","address":"Salatiga","village":"Tanjungrejo","whatsapp":"082358291812","username":"admin1","password":"password"},
+{"code":"002","name":"Admin 2","address":"Klaten","village":"Sukorejo","whatsapp":"082358291812","username":"admin2","password":"password"}
+]
