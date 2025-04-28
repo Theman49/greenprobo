@@ -84,9 +84,7 @@ router.patch("/trash-master/:type/:code", async (req, res) => {
 // This section will help you create a new record.
 router.post("/trash-master", async (req, res) => {
   try {
-    let collection = await db.collection("trashMaster").find({type: req.body.type});
-    console.log(collection)
-    /*
+    let collection = await db.collection("trashMaster");
     let result = await collection.updateOne(
       {type: req.body.type},
       {
@@ -100,7 +98,6 @@ router.post("/trash-master", async (req, res) => {
       }
     )
     res.send(result).status(204);
-    */
   } catch (err) {
     console.error(err);
     res.status(500).send("Error adding record");
