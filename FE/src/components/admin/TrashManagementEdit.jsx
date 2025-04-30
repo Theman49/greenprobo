@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { NumericFormat } from "react-number-format";
 import axios from 'axios';
 
-const baseUrl = `http://localhost:3000/api/trash-master`;
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 export default function TrashManagementEdit() {
     const location = useLocation();
@@ -19,7 +19,7 @@ export default function TrashManagementEdit() {
     const handleEdit = async() => {
         console.log('EDIT')
         console.log(payload)
-        const req = await axios.patch(`${baseUrl}/${location.state?.trashType}/${location.state?.trashCode}`, {
+        const req = await axios.patch(`${baseUrl}/trash-master/${location.state?.trashType}/${location.state?.trashCode}`, {
             name: payload.trashName,
             code: payload.trashCode,
             type: payload.trashType,
@@ -36,7 +36,7 @@ export default function TrashManagementEdit() {
 
     const handleDelete = async() => {
         console.log("Delete Trash");
-        const req = await axios.delete(`${baseUrl}/${location.state?.trashType}/${location.state?.trashCode}`);
+        const req = await axios.delete(`${baseUrl}/trash-master/${location.state?.trashType}/${location.state?.trashCode}`);
         if(req){
         console.log('REQ', req)
         if(req.status == 200){
@@ -49,7 +49,7 @@ export default function TrashManagementEdit() {
     const [trashType, setTrashType] = useState();
     useEffect(() => {
         const fetchData = async() => {
-            const res = await axios.get(`${baseUrl}`)
+            const res = await axios.get(`${baseUrl}/trash-master`)
             if (res.data) {
             const temp = res.data.map((item) => {
                 return {

@@ -10,7 +10,7 @@ import FooterImage from "../../assets/footer-image.svg";
 import Logo from "../../assets/logo.svg";
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3000/api';
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 export default function Login() {
 	const [showPass,setShowPass] = useState(false);

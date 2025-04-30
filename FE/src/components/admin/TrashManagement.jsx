@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import axios from 'axios';
 
-const baseUrl = `http://localhost:3000/api/trash-master`;
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const DataTable = ({data, type}) => {
     const navigate = useNavigate();
@@ -70,7 +70,7 @@ const ListTrashFee = () => {
     const [dataset, setDataset] = useState();
     useEffect(() => {
         const fetchData = async() => {
-            const res = await axios.get(`${baseUrl}`)
+            const res = await axios.get(`${baseUrl}/trash-master`)
             if (res.data) {
             const temp = res.data.map((item) => {
                 return {

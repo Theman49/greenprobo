@@ -14,13 +14,13 @@ export default function CustomerManagementAdd() {
   });
 
   const navigate = useNavigate();
-  const baseUrl = `http://localhost:3000/api/customers`;
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
   const handleAdd = async() => {
     console.log("Add");
     console.log(payload);
 
-    const req = await axios.post(`${baseUrl}`, {
+    const req = await axios.post(`${baseUrl}/customers`, {
       name: payload.name,
       type: payload.type,
       address: payload.address,

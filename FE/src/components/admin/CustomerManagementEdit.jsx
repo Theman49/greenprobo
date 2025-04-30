@@ -15,12 +15,12 @@ export default function CustomerManagementEdit() {
   const { id } = useParams(); 
   const navigate = useNavigate();
 
-  const baseUrl = `http://localhost:3000/api/customers`;
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchData = async() => {
       // const customerData = Customers.find((customer) => customer.code === id);
-      const res = await axios.get(`${baseUrl}/${id}`)
+      const res = await axios.get(`${baseUrl}/customers/${id}`)
       if (res.data) {
         setPayload(res.data);  
       }
