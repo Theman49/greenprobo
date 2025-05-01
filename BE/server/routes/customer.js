@@ -46,6 +46,8 @@ router.post("/customers", async (req, res) => {
       address: req.body.address,
       village: req.body.village,
       whatsapp: req.body.whatsapp,
+      username: req.body.username,
+      password: req.body.password,
     };
     let collection = await db.collection("customers");
     let result = await collection.insertOne(newDocument);
@@ -67,6 +69,8 @@ router.patch("/customers/:id", async (req, res) => {
         address: req.body.address,
         village: req.body.village,
         whatsapp: req.body.whatsapp,
+        username: req.body.username,
+        password: req.body.password,
       },
     };
 
