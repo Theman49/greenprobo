@@ -4,8 +4,11 @@ services:
   mongo:
     image: mongo
     container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ahha90tU
+      MONGO_INITDB_ROOT_PASSWORD: janlkjf8e3-04ualkdsfj
     ports:
-      - "27017:27017"
+      - "127.0.0.1:27017:27017"
     volumes:
       - mongo-data:/data/db
 
@@ -17,21 +20,19 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGO_URI=mongodb://mongodb:27017
+      - MONGO_URI=mongodb://ahha90tU:janlkjf8e3-04ualkdsfj@mongodb:27017
       - PORT=3000
 
   frontend:
     build: 
       context: ./FE
       args:
-        VITE_API_BASE_URL=http://localhost:3000/api
+        VITE_API_BASE_URL: http://localhost:3000/api
     container_name: react-frontend
     ports:
       - "4173:80"
     depends_on:
       - backend
-    environment:
-      - VITE_API_BASE_URL=http://localhost:3000/api
 
 volumes:
   mongo-data:
