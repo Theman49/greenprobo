@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   mongo:
     image: mongo
@@ -7,16 +5,16 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ahha90tU
       MONGO_INITDB_ROOT_PASSWORD: janlkjf8e3-04ualkdsfj
-    ports:
-      - "127.0.0.1:27017:27017"
+    expose:
+      - "27017"
     volumes:
       - mongo-data:/data/db
 
   backend:
     build: ./BE
     container_name: node-backend
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     depends_on:
       - mongo
     environment:
@@ -27,10 +25,10 @@ services:
     build: 
       context: ./FE
       args:
-        VITE_API_BASE_URL: http://localhost:3000/api
+        VITE_API_BASE_URL: /api
     container_name: react-frontend
     ports:
-      - "4173:80"
+      - "80:80"
     depends_on:
       - backend
 
