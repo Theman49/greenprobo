@@ -231,6 +231,9 @@ const ListTrashFee = ({dataset}) => {
             aria-label="secondary tabs example"
             selectionFollowsFocus={false}
             sx={{
+                '& .MuiTabs-indicator': {
+                    display: 'none',
+                },
                 '& .Mui-selected': {
                     backgroundColor: ColorsArr[0],
                     color: 'white !important',
