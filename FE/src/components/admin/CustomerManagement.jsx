@@ -34,11 +34,11 @@ export default function CustomerManagementTable() {
   ];
 
   const [rows, setRows] = useState();
-  const baseUrl = `http://localhost:3000/api/customers`;
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchData = async() => {
-      const res = await axios.get(`${baseUrl}`)
+      const res = await axios.get(`${baseUrl}/customers`)
       if (res.data) {
         const temp = res.data.map((item) => {
           return {

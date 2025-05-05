@@ -4,7 +4,7 @@ import { NumericFormat } from "react-number-format";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-const baseUrl = `http://localhost:3000/api/trash-master`;
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 export default function TrashManagementAdd() {
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ export default function TrashManagementAdd() {
     const handleAdd = async() => {
         console.log('Add')
         console.log(payload)
-        const req = await axios.post(`${baseUrl}`, {
+        const req = await axios.post(`${baseUrl}/trash-master`, {
             name: payload.trashName,
             code: payload.trashCode,
             type: payload.trashType,
@@ -40,7 +40,7 @@ export default function TrashManagementAdd() {
     const [trashType, setTrashType] = useState();
     useEffect(() => {
         const fetchData = async() => {
-            const res = await axios.get(`${baseUrl}`)
+            const res = await axios.get(`${baseUrl}/trash-master`)
             if (res.data) {
             const temp = res.data.map((item) => {
                 return {

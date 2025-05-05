@@ -11,6 +11,9 @@ import { ObjectId } from "mongodb";
 // The router will be added as a middleware and will take control of requests starting with path /record.
 const router = express.Router();
 
+router.get('/check', (req, res) => {
+    res.send("API OK").status(200);
+})
 
 // This section will help you create a new record.
 router.post("/auth", async (req, res) => {
@@ -29,23 +32,21 @@ router.post("/auth", async (req, res) => {
                 message: "Incorrect username or password",
                 success: false
             });
-        }
-
-        if(getUser[0].password !== req.body.password){
-            res.status(200).send({
-                message: "Incorrect username or password",
-                success: false
-            })
         }else{
-            res.status(200).send({
-                message: "Success to login",
-                success: true,
-                data: getUser[0]
-            })
+            if(getUser[0].password !== req.body.password){
+                res.status(200).send({
+                    message: "Incorrect username or password",
+                    success: false
+                })
+            }else{
+                res.status(200).send({
+                    message: "Success to login",
+                    success: true,
+                    data: getUser[0]
+                })
 
+            }
         }
-
-
     } catch (err) {
       console.error(err);
       res.status(500).send("Error login");

@@ -9,18 +9,20 @@ export default function CustomerManagementEdit() {
     type: '--',
     address: '',
     village: '--',
-    whatsapp: ''
+    whatsapp: '',
+    username: '',
+    password: '',
   });
 
   const { id } = useParams(); 
   const navigate = useNavigate();
 
-  const baseUrl = `http://localhost:3000/api/customers`;
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchData = async() => {
       // const customerData = Customers.find((customer) => customer.code === id);
-      const res = await axios.get(`${baseUrl}/${id}`)
+      const res = await axios.get(`${baseUrl}/customers/${id}`)
       if (res.data) {
         setPayload(res.data);  
       }
@@ -31,12 +33,14 @@ export default function CustomerManagementEdit() {
   const handleSave = async() => {
     console.log("Save Customer Data:", payload);
 
-    const req = await axios.patch(`${baseUrl}/${payload._id}`, {
+    const req = await axios.patch(`${baseUrl}/customers/${payload._id}`, {
       name: payload.name,
       type: payload.type,
       address: payload.address,
       village: payload.village,
       whatsapp: payload.whatsapp,
+      username: payload.username,
+      password: payload.password,
     });
     if(req){
       console.log('REQ', req)
@@ -48,7 +52,7 @@ export default function CustomerManagementEdit() {
 
   const handleDelete = async() => {
     console.log("Delete Customer");
-    const req = await axios.delete(`${baseUrl}/${id}`);
+    const req = await axios.delete(`${baseUrl}/customers/${id}`);
     if(req){
       console.log('REQ', req)
       if(req.status == 200){
@@ -132,6 +136,26 @@ export default function CustomerManagementEdit() {
                 id="whatsapp"
                 className="p-3 rounded-lg border-1 border-gray-300 text-gray-500 w-full"
                 onChange={(e) => setPayload({ ...payload, whatsapp: e.target.value })}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="text-xl">Username</p>
+              <input
+                value={payload.username}
+                type="text"
+                id="username"
+                className="p-3 rounded-lg border-1 border-gray-300 text-gray-500 w-full"
+                onChange={(e) => setPayload({ ...payload, username: e.target.value })}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="text-xl">Password</p>
+              <input
+                value={payload.password}
+                type="text"
+                id="password"
+                className="p-3 rounded-lg border-1 border-gray-300 text-gray-500 w-full"
+                onChange={(e) => setPayload({ ...payload, password: e.target.value })}
               />
             </div>
           </div>

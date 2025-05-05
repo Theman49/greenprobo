@@ -15,7 +15,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Types } from '../../data/Customers';
 
-const baseUrl = 'http://localhost:3000/api';
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const Calculator = ({handler, prevData, dataset}) => {
     const parentEl = useRef(null);

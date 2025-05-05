@@ -10,22 +10,26 @@ export default function CustomerManagementAdd() {
     type: '--',
     address: '',
     village: '--',
-    whatsapp: ''
+    whatsapp: '',
+    username: '',
+    password: '',
   });
 
   const navigate = useNavigate();
-  const baseUrl = `http://localhost:3000/api/customers`;
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
   const handleAdd = async() => {
     console.log("Add");
     console.log(payload);
 
-    const req = await axios.post(`${baseUrl}`, {
+    const req = await axios.post(`${baseUrl}/customers`, {
       name: payload.name,
       type: payload.type,
       address: payload.address,
       village: payload.village,
       whatsapp: payload.whatsapp,
+      username: payload.username,
+      password: payload.password,
     });
     if(req){
       console.log('REQ', req)
@@ -115,6 +119,26 @@ export default function CustomerManagementAdd() {
                 id="whatsapp"
                 className="p-3 rounded-lg border-1 border-gray-300 text-gray-500 w-full"
                 onChange={(e) => handleChange("whatsapp", e)}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="text-xl">Username</p>
+              <input
+                value={payload.username}
+                type="text"
+                id="username"
+                className="p-3 rounded-lg border-1 border-gray-300 text-gray-500 w-full"
+                onChange={(e) => handleChange("username", e)}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="text-xl">Password</p>
+              <input
+                value={payload.password}
+                type="text"
+                id="password"
+                className="p-3 rounded-lg border-1 border-gray-300 text-gray-500 w-full"
+                onChange={(e) => handleChange("password", e)}
               />
             </div>
           </div>

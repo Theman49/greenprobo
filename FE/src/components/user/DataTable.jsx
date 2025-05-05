@@ -9,7 +9,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import {format} from 'date-fns';
 
-const baseUrl = 'http://localhost:3000/api';
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 export default function DataTable() {
   const getSession = useSelector((state) => state.session);
