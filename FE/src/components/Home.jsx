@@ -136,7 +136,7 @@ export default function Home() {
 				<div className="flex gap justify-between">
 					<div id="hero-container" className="p-6 justify-center flex flex-col gap-8 w-3/5">
 						<div className="flex flex-col gap-2">
-							<h1 className="text-3xl">Bersama Membangun <div className="relative inline">Probolinggo<span className="absolute top-[80%] -z-10 left-0 bg-green-200 h-2 w-full"></span></div> yang Lebih Bersih dan <span className="text-green-900 italic">Hijau</span></h1>
+							<h1 className="text-5xl font-semibold">Bersama Membangun <div className="relative inline">Probolinggo<span className="absolute top-[80%] -z-10 left-0 bg-green-200 h-2 w-full"></span></div> yang Lebih Bersih dan <span className="text-green-900 italic">Hijau</span></h1>
 							<p className="text-gray-500">Sampah Anda memiliki nilai yang bisa membantu lingkungan dan ekonomi lokal. Ayo simpan dan lihat bagaimana Anda bisa membuat perbedaan!</p>
 						</div>
 						<NavLink to="/login" className="bg-green-900 text-white w-fit px-4 py-2 rounded-full ">
@@ -153,7 +153,7 @@ export default function Home() {
 				<div className="flex flex-col gap-5">
 					<div>
 						<p className="text-green-900">About Us</p>
-						<p className="text-3xl">Mengenal Lebih Dekat GreenProbolinggo</p>
+						<p className="text-4xl font-medium">Mengenal Lebih Dekat GreenProbolinggo</p>
 					</div>
 					<p className="text-gray-500">
 						Di GreenProbo, kami percaya setiap tindakan kecil terhadap lingkungan berkontribusi pada perubahan besar. Didirikan di Kabupaten Probolinggo, kami adalah sebuah inisiatif yang bertujuan untuk mengedukasi dan memobilisasi masyarakat dalam upaya pelestarian lingkungan melalui pengelolaan sampah yang efektif dan berkelanjutan.
@@ -166,7 +166,7 @@ export default function Home() {
 						<div className="flex flex-col gap-2">
 							<div>
 								<p className="text-green-900">How we work?</p>
-								<p className="text-3xl">Cara Mudah Menuju Probolinggo Hijau</p>
+								<p className="text-4xl font-medium">Cara Mudah Menuju Probolinggo Hijau</p>
 							</div>
 							<p className="text-gray-500">
 								Ikuti langkah simpel ini untuk mulai berkontribusi pada lingkungan yang lebih baik.
@@ -176,21 +176,21 @@ export default function Home() {
 							<div className="flex flex-col gap-2">
 								<p className="text-5xl font-thin">01</p>
 								<div className="flex flex-col">
-									<p>Datang ke Bank Sampah</p>
+									<p className="text-xl font-medium">Datang ke Bank Sampah</p>
 									<p className="text-gray-500">Kunjungi situs GreenProbolinggo, daftar, verifikasi akun Anda, dan pelajari teknik pemilahan sampah yang efektif melalui materi edukatif kami.</p>
 								</div>
 							</div>
 							<div className="flex flex-col gap-2">
 								<p className="text-5xl font-thin">02</p>
 								<div className="flex flex-col">
-									<p>Peneyetoran Sampah</p>
+									<p className="text-xl font-medium">Peneyetoran Sampah</p>
 									<p className="text-gray-500">Atur jadwal penyetoran sampah melalui kalender online kami, lakukan penyetoran sesuai jadwal, dan konfirmasikan melalui sistem kami.</p>
 								</div>
 							</div>
 							<div className="flex flex-col gap-2">
 								<p className="text-5xl font-thin">03</p>
 								<div className="flex flex-col">
-									<p>Kumpulkan dan Tarik Uang</p>
+									<p className="text-xl font-medium">Kumpulkan dan Tarik Uang</p>
 									<p className="text-gray-500">Pantau berapa banyak sampah yang telah Anda setorkan melalui dashboard pengguna dan tukarkan sampah tersebut menjadi uang tunai sebagai bentuk penghargaan atas kontribusi Anda.</p>
 								</div>
 							</div>
@@ -202,7 +202,7 @@ export default function Home() {
 			<div id="features" className="flex flex-col gap-8 p-10">
 				<div className="flex flex-col justify-center items-center">
 					<p className="text-green-500">Features</p>
-					<p className="text-3xl">Ubah Sampah Menjadi Keuntungan dengan GreenProbolinggo</p>
+					<p className="text-4xl fotn-medium">Ubah Sampah Menjadi Keuntungan dengan GreenProbolinggo</p>
 					<p className="text-gray-500">
 						Temukan Bagaimana Teknologi dan Inisiatif Kami Memudahkan Anda Berkontribusi pada Lingkungan yang Lebih Baik
 					</p>
@@ -248,7 +248,7 @@ export default function Home() {
 			<div id="article" className="flex flex-col gap-8 p-10 bg-gray-100">
 				<div className="flex flex-col justify-center items-center">
 					<p className="text-green-500">Artikel</p>
-					<p className="text-3xl">Tambah Pengetahuanmu Tentang Bank Sampah!</p>
+					<p className="text-4xl font-medium">Tambah Pengetahuanmu Tentang Bank Sampah!</p>
 					<p className="text-gray-500">
 						Banyak info menarik yang bisa Kamu eksplor tentang bank sampah
 					</p>
@@ -263,7 +263,7 @@ export default function Home() {
 			<div id="faqs" className="flex flex-col gap-8 p-10">
 				<div className="flex flex-col justify-center">
 					<p className="text-green-500">FAQs</p>
-					<p className="text-3xl">Pertanyaan yang Sering Ditanyakan</p>
+					<p className="text-4xl font-medium">Pertanyaan yang Sering Ditanyakan</p>
 					<p className="text-gray-500">
 						Jawaban langsung untuk pertanyaan paling sering mengenai setoran sampah.
 					</p>
@@ -295,7 +295,7 @@ export default function Home() {
 				<div className="flex flex-col justify-between">
 					<div className="flex flex-col gap-8 w-4/5">
 						<div className="flex flex-col gap-4">
-							<p className="text-3xl">Ayo bergabung bersama Greenproblinggo 
+							<p className="text-4xl font-medium">Ayo bergabung bersama Greenproblinggo 
 	sekarang!</p>
 							<p>Jadilah bagian dari perubahan positif! Daftar hari ini untuk memulai kontribusi Anda dalam menjaga lingkungan dengan GreenProbolinggo.</p>
 						</div>
