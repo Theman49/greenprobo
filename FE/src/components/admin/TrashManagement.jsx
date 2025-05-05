@@ -34,7 +34,7 @@ const DataTable = ({data, type}) => {
   
     const columns = [
       { field: 'trashCode', headerName: 'Kode Sampah', width: 200 },
-      { field: 'trashType', headerName: 'Jenis Sampah', width: 200 },
+      { field: 'trashType', headerName: 'Jenis Sampah', width: 200, cellClassName: 'capitalize-cell' },
       { field: 'trashName', headerName: 'Nama Sampah', width: 200 },
       { field: 'trashFee', headerName: 'Harga Sampah', width: 200,},
       { field: 'actions', type:"actions", headerName: 'Aksi', width: 200, getActions: ({id}) => {
@@ -60,7 +60,12 @@ const DataTable = ({data, type}) => {
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
           checkboxSelection
-          sx={{ border: 0 }}
+          sx={{ 
+            border: 0,
+            '& .capitalize-cell': {
+                textTransform: 'capitalize',
+            }
+        }}
         />
       </Paper>
     );
@@ -135,7 +140,7 @@ const ListTrashFee = () => {
         >
         {dataset?.map((item, key) => {
             return(
-                <Tab id={key} value={item.type} label={item.type}/>
+                <Tab id={key} value={item.type} label={item.type} sx={{ textTransform: 'capitalize'}}/>
             );
         })}
 
