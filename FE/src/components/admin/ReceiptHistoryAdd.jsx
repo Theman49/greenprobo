@@ -526,7 +526,7 @@ export default function ReceiptHistoryDetail() {
                                 <EditSquareIcon sx={{width: '20px', height: '20px'}}/> <p className='text-base font-bold'>Edit</p>
                             </div>
                             <div onClick={handleSend} className="flex gap-2 items-center px-4 py-4 justify-center rounded-full border-1 bg-green-900 text-white hover:cursor-pointer">
-                               <ShareIcon  sx={{width: '24px', height: '24px'}}/> <p className='text-base font-semibold'>Kirim Nota</p>
+                              <p className='text-base font-semibold'>Selesai</p>
                             </div>
                         </div>
                         }
