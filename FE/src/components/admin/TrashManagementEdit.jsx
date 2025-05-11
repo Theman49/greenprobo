@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react';
 import { useLocation, useNavigate } from "react-router-dom"
 import { NumericFormat } from "react-number-format";
 import axios from 'axios';
+import { Select, MenuItem } from '@mui/material';
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -102,14 +103,16 @@ export default function TrashManagementEdit() {
                         </div>
                         <div className="flex flex-col gap-1">
                             <p className="text-xl">Jenis Sampah</p>
-                            <select value={payload.trashType} onChange={(e) => setPayload({ ...payload, trashType: e.target.value })} className="w-full">
-                                <option value="--">--Jenis Sampah--</option>
+                            <Select value={payload.trashType} onChange={(e) => setPayload({ ...payload, trashType: e.target.value })} className="w-full" sx={{
+                                textTransform: 'capitalize'
+                            }}>
+                                <MenuItem value="--">--Jenis Sampah--</MenuItem>
                                 {trashType?.map((item, key) => {
                                     return(
-                                        <option id={key} value={item.type}>{item.type}</option>
+                                        <MenuItem id={key} value={item.type} sx={{textTransform: 'capitalize'}}>{item.type}</MenuItem>
                                     )
                                 })}
-                            </select>
+                            </Select>
                         </div>
                         <div className="flex flex-col gap-1">
                             <p className="text-xl">Harga Sampah</p>

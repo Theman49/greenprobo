@@ -18,9 +18,9 @@ export default function CustomerManagementTable() {
   const columns = [
     { field: 'code', headerName: 'Kode Nasabah', width: 200 },
     { field: 'name', headerName: 'Nama Nasabah', width: 250 },
-    { field: 'type', headerName: 'Jenis Nasabah', width: 200 },
+    { field: 'type', headerName: 'Jenis Nasabah', width: 200, cellClassName: 'capitalize-cell' },
     { field: 'address', headerName: 'Alamat', width: 300 },
-    { field: 'village', headerName: 'Kelurahan', width: 200 },
+    { field: 'village', headerName: 'Kelurahan', width: 200, cellClassName: 'capitalize-cell'  },
     { field: 'actions', type:"actions", headerName: 'Aksi', width: 200, getActions: ({id}) => {
       return [
           <NavLink onClick={() => handleSeeDetail(id)} className="flex justify-center items-center px-2 py-1 rounded-full bg-gray-50 border-1 border-gray-300 hover:cursor-pointer">
@@ -93,7 +93,12 @@ export default function CustomerManagementTable() {
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10]}
             checkboxSelection
-            sx={{ border: 0 }}
+            sx={{ 
+              border: 0,
+              '& .capitalize-cell': {
+                  textTransform: 'capitalize'
+              }
+             }}
           />
         </Paper>
       </div>
