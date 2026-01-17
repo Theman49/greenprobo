@@ -1,7 +1,8 @@
 import express from "express";
 
 // This will help us connect to the database
-import db from "../db/connection.js";
+// import db from "../db/connection.js";
+import { prisma } from '../../prisma/lib/prisma.ts'
 
 // This help convert the id from string to ObjectId for the _id.
 import { ObjectId } from "mongodb";
@@ -51,21 +52,28 @@ router.patch("/deposit-histories-edit/:id", async (req, res) => {
 
 router.post("/deposit-histories-detail", async (req, res) => {
   try {
-    let filter = {
-      "transaction.noFactur": req.body.noFactur,
-    };
-    if(req.body.isAdmin){
-      filter["admin.code"] = req.body.code
-    }else{
-      filter["customer.code"] = req.body.code
-    }
-    const data = await db.collection('depositHistories').
-                  find(filter).
-                  toArray();
-    
-    console.log("DATA", data)
+    const query = await prisma.transactions.findMany()
+    const data = query.map((item) => {
+      return {
+        transaction: item, 
+        ...JSON.parse(item.detail)
+      }
+    })
+    const result = data.filter((item) => {
+      if(item.transaction.noFactur == req.body.noFactur){
+        if(req.body.isAdmin && item.admin.code == req.body.code){
+          return item
+        }else{
+          if(item.customer.code == req.body.code){
+            return item
+          }
+        }
+      }
+  })
 
-    res.send(data).status(200);
+    console.log("result", result)
+
+    res.send(result).status(200);
   }catch(err){
     console.error(err);
     res.status(500).send("Error getting record");
@@ -84,12 +92,29 @@ router.post("/deposit-histories-index", async (req, res) => {
         "admin.code": req.body.code,
       }
     }
-    const data = await db.collection('depositHistories').
-                  find(filter).
-                  toArray();
+    const query = await prisma.transactions.findMany()
+    const data = query.map((item) => {
+      return {
+        transaction: item, 
+        ...JSON.parse(item.detail)
+      }
+    })
 
-    console.log(data, req.body)
-    res.send(data).status(200);
+    const result = data.filter((item) => {
+      if(req.body.isAdmin){
+        if(item.admin.code == req.body.code){
+          return item
+        }
+      }{
+        if(item.customer.code == req.body.code){
+          return item
+        }
+
+      }
+    })
+
+    console.log("RESULT", result)
+    res.send(result).status(200);
   }catch(err){
     console.error(err);
     res.status(500).send("Error getting record");
@@ -99,15 +124,26 @@ router.post("/deposit-histories-index", async (req, res) => {
 // This section will help you create a new record.
 router.post("/deposit-histories", async (req, res) => {
   try {
-    const lastData = await db.collection('depositHistories').
-                  find({
-                    "transaction.type": req.body.transaction.type,
-                    "transaction.month": req.body.transaction.month,
-                    "transaction.year": req.body.transaction.year,
-                  }).
-                  toArray();
+    console.log("PAYLOAD", req.body);
 
-    const payload = req.body;
+    const detail = JSON.stringify({
+      trash: req.body.trash,
+      customer: req.body.customer,
+      admin: req.body.admin,
+    })
+
+    const payload = {
+      ...req.body.transaction,
+      detail: detail
+    }
+    const lastData = await prisma.transactions.findMany({
+      where: {
+        type: req.body.transaction.type,
+        month: req.body.transaction.month,
+        year: req.body.transaction.year,
+      }
+    })
+
     const maxLengthId = 3
     let nextId = 1;
 
@@ -122,32 +158,13 @@ router.post("/deposit-histories", async (req, res) => {
       }
       genId += `${nextId}/`;
     }
-    payload.transaction.noFactur = genId + req.body.transaction.noFactur
+    payload.noFactur = genId + req.body.transaction.noFactur
     console.log(payload);
     // const noFactur = req.body.transaction.noFactur;
-    let collection = await db.collection("depositHistories");
-    let result = await collection.insertOne(payload);
+    let result = await prisma.transactions.create({
+      data: payload
+    });
     res.send(result).status(204);
-    /*
-    const lastData = await db.collection('depositHistories').
-                  find({}, {projection: {code: 1}}).
-                  sort({code: -1}).
-                  limit(1).
-                  toArray();
-
-    const lastCode = parseInt(lastData[0].code);
-    const newCode = `0${lastCode + 1}`;
-    let newDocument = {
-      code: newCode,
-      name: req.body.name,
-      type: req.body.type,
-      address: req.body.address,
-      village: req.body.village,
-      whatsapp: req.body.whatsapp,
-    };
-    let collection = await db.collection("customers");
-    let result = await collection.insertOne(newDocument);
-    */
     
   } catch (err) {
     console.error(err);
@@ -155,90 +172,5 @@ router.post("/deposit-histories", async (req, res) => {
   }
 });
 
-/*
-// This section will help you get a list of all the inventory.
-router.get("/deposit-histories", async (req, res) => {
-  let collection = await db.collection("depositHistories");
-  let results = await collection.find({}).toArray();
-  res.send(results).status(200);
-});
-
-// This section will help you get a single record by id
-router.get("/customers/:id", async (req, res) => {
-  let collection = await db.collection("customers");
-  let query = { _id: new ObjectId(req.params.id) };
-  let result = await collection.findOne(query);
-
-  if (!result) res.send("Not found").status(404);
-  else res.send(result).status(200);
-});
-
-// This section will help you create a new record.
-router.post("/customers", async (req, res) => {
-  try {
-    const lastData = await db.collection('customers').
-                  find({}, {projection: {code: 1}}).
-                  sort({code: -1}).
-                  limit(1).
-                  toArray();
-
-    const lastCode = parseInt(lastData[0].code);
-    const newCode = `0${lastCode + 1}`;
-    let newDocument = {
-      code: newCode,
-      name: req.body.name,
-      type: req.body.type,
-      address: req.body.address,
-      village: req.body.village,
-      whatsapp: req.body.whatsapp,
-    };
-    let collection = await db.collection("customers");
-    let result = await collection.insertOne(newDocument);
-    res.send(result).status(204);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error adding record");
-  }
-});
-
-// This section will help you update a record by id.
-router.patch("/customers/:id", async (req, res) => {
-  try {
-    const query = { _id: new ObjectId(req.params.id) };
-    const updates = {
-      $set: {
-        name: req.body.name,
-        type: req.body.type,
-        address: req.body.address,
-        village: req.body.village,
-        whatsapp: req.body.whatsapp,
-      },
-    };
-
-    let collection = await db.collection("customers");
-    let result = await collection.updateOne(query, updates);
-    res.send(result).status(200);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error updating record customers");
-  }
-});
-
-
-// This section will help you delete a record
-router.delete("/customers/:id", async (req, res) => {
-  try {
-    const query = { _id: new ObjectId(req.params.id) };
-
-    const collection = db.collection("customers");
-    let result = await collection.deleteOne(query);
-
-    res.send(result).status(200);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error deleting record");
-  }
-});
-*/
 
 export default router;

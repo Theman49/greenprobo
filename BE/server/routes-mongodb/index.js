@@ -1,11 +1,11 @@
-import trashMaster from './trash-master.js'
 import customer from './customer.js'
+import trashMaster from './trash-master.js'
 import auth from './auth.js'
 import depositHistories from './deposit-history.js'
 
 export default [
-    trashMaster,
     customer,
+    trashMaster,
     auth,
     depositHistories
 ]

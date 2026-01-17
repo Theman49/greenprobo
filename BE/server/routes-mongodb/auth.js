@@ -1,8 +1,7 @@
 import express from "express";
 
 // This will help us connect to the database
-// import db from "../db/connection.js";
-import { prisma } from '../../prisma/lib/prisma.ts'
+import db from "../db/connection.js";
 
 // This help convert the id from string to ObjectId for the _id.
 import { ObjectId } from "mongodb";
@@ -20,28 +19,21 @@ router.get('/check', (req, res) => {
 router.post("/auth", async (req, res) => {
     try {
         let collectionName = '';
-        let getUser = [];
         if(req.body.type === 'admin'){
-            getUser = await prisma.admins.findFirst({
-                where: {
-                    username: req.body.username
-                }
-            })
+            collectionName = 'admins';
         }else if(req.body.type === 'customer'){
-            getUser = await prisma.customers.findFirst({
-                where: {
-                    username: req.body.username
-                }
-            })
+            collectionName = 'customers';
         }
+        const getUser = await db.collection(collectionName).
+            find({username: req.body.username}).toArray()
 
-        if(!getUser){
+        if(getUser.length === 0){
             res.status(200).send({
                 message: "Incorrect username or password",
                 success: false
             });
         }else{
-            if(getUser.password !== req.body.password){
+            if(getUser[0].password !== req.body.password){
                 res.status(200).send({
                     message: "Incorrect username or password",
                     success: false
@@ -50,7 +42,7 @@ router.post("/auth", async (req, res) => {
                 res.status(200).send({
                     message: "Success to login",
                     success: true,
-                    data: getUser
+                    data: getUser[0]
                 })
 
             }

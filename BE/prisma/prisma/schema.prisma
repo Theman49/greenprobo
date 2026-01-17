@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model admins {
+  code     String  @id @db.VarChar(100)
+  name     String? @db.VarChar(100)
+  address  String? @db.VarChar(100)
+  village  String? @db.VarChar(100)
+  whatsapp String? @db.VarChar(100)
+  username String? @db.VarChar(100)
+  password String? @db.VarChar(100)
+}
+
+model customers {
+  code     String  @id @db.VarChar(100)
+  name     String? @db.VarChar(100)
+  type     String? @db.VarChar(100)
+  address  String? @db.VarChar(100)
+  village  String? @db.VarChar(100)
+  whatsapp String? @db.VarChar(100)
+  username String? @db.VarChar(100)
+  password String? @db.VarChar(100)
+}
+
+model trash_master {
+  id   Int     @id @default(autoincrement())
+  type String? @db.VarChar(100)
+  name String? @db.VarChar(100)
+  code String? @db.VarChar(100)
+  fee  Int
+}
+
+model transactions {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  date       DateTime? @db.DateTime(0)
+  noFactur   String?   @db.VarChar(100)
+  type       String?   @db.VarChar(100)
+  year       String?   @db.VarChar(100)
+  totalTrash Int?
+  totalFee   Int?
+  detail     String?   @db.Text
+  month      String?   @db.VarChar(100)
+}

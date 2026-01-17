@@ -1,7 +1,8 @@
 import express from "express";
 
 // This will help us connect to the database
-import db from "../db/connection.js";
+// import db from "../db/connection.js";
+import { prisma } from '../../prisma/lib/prisma.ts'
 
 // This help convert the id from string to ObjectId for the _id.
 import { ObjectId } from "mongodb";
@@ -13,8 +14,21 @@ const router = express.Router();
 
 // This section will help you get a list of all the inventory.
 router.get("/trash-master", async (req, res) => {
-  let collection = await db.collection("trashMaster");
-  let results = await collection.find({}).toArray();
+  let query = await prisma.trash_master.findMany({
+    distinct: 'type',
+    select: {
+      type: true,
+    }
+  });
+
+  const data = await prisma.trash_master.findMany()
+
+  let results = query.map((item) => {
+    return {
+      type: item.type,
+      data: data.filter((raw) => raw.type == item.type) 
+    }
+  })
   res.send(results).status(200);
 });
 
@@ -31,50 +45,22 @@ router.get("/trash-master/:type", async (req, res) => {
 
 
 // This section will help you update a record by id.
-router.patch("/trash-master/:type/:code", async (req, res) => {
+router.patch("/trash-master/:id", async (req, res) => {
   try {
-    let collection = await db.collection("trashMaster");
-    const query = { type: req.params.type };
-    /*
-    const updates = {
-      $set: {
-        name: req.body.name,
-        type: req.body.type,
-        address: req.body.address,
-        village: req.body.village,
-        whatsapp: req.body.whatsapp,
+    let result = await prisma.trash_master.update({
+      where: {
+        id: parseInt(req.params.id),
       },
-    };
-    */
-
-    await collection.updateOne(
-      {type: req.params.type},
-      {
-        $pull: {
-          data: {code: req.params.code}
-        }
-      }
-    )
-
-    let result = await collection.updateOne(
-      {type: req.body.type},
-      {
-        $push: {
-          data: {
+      data: {
+            type: req.body.type,
             name: req.body.name,
             code: req.body.code,
-            fee: req.body.fee,
-          }
-        }
+            fee: parseInt(req.body.fee),
+
       }
-    )
+    })
     res.send(result).status(200);
 
-    /*
-    let collection = await db.collection("trashMaster");
-    let result = await collection.updateOne(query, updates);
-    res.send(result).status(200);
-    */
   } catch (err) {
     console.error(err);
     res.status(500).send("Error updating trash record");
@@ -84,20 +70,15 @@ router.patch("/trash-master/:type/:code", async (req, res) => {
 // This section will help you create a new record.
 router.post("/trash-master", async (req, res) => {
   try {
-    let collection = await db.collection("trashMaster");
-    let result = await collection.updateOne(
-      {type: req.body.type},
-      {
-        $push: {
-          data: {
-            name: req.body.name,
-            code: req.body.code,
-            fee: req.body.fee,
-          }
-        }
+    const newData = await prisma.trash_master.create({
+      data: {
+        type: req.body.type,
+        name: req.body.name,
+        code: req.body.code,
+        fee: parseInt(req.body.fee),
       }
-    )
-    res.send(result).status(204);
+    })
+    res.send(newData).status(204);
   } catch (err) {
     console.error(err);
     res.status(500).send("Error adding record");
@@ -106,17 +87,13 @@ router.post("/trash-master", async (req, res) => {
 
 
 // This section will help you delete a record
-router.delete("/trash-master/:type/:code", async (req, res) => {
+router.delete("/trash-master/:id", async (req, res) => {
   try {
-    const collection = db.collection("trashMaster");
-    let result = await collection.updateOne(
-      {type: req.params.type},
-      {
-        $pull: {
-          data: {code: req.params.code}
-        }
+    let result = await prisma.trash_master.delete({
+      where: {
+        id: parseInt(req.params.id)
       }
-    )
+    })
     res.send(result).status(200);
   } catch (err) {
     console.error(err);
