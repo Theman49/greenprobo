@@ -33,7 +33,7 @@ export default function CustomerManagementEdit() {
   const handleSave = async() => {
     console.log("Save Customer Data:", payload);
 
-    const req = await axios.patch(`${baseUrl}/customers/${payload._id}`, {
+    const req = await axios.patch(`${baseUrl}/customers/${payload.code}`, {
       name: payload.name,
       type: payload.type,
       address: payload.address,

@@ -20,7 +20,7 @@ export default function TrashManagementEdit() {
     const handleEdit = async() => {
         console.log('EDIT')
         console.log(payload)
-        const req = await axios.patch(`${baseUrl}/trash-master/${location.state?.trashType}/${location.state?.trashCode}`, {
+        const req = await axios.patch(`${baseUrl}/trash-master/${location.state?.id}`, {
             name: payload.trashName,
             code: payload.trashCode,
             type: payload.trashType,
@@ -37,7 +37,7 @@ export default function TrashManagementEdit() {
 
     const handleDelete = async() => {
         console.log("Delete Trash");
-        const req = await axios.delete(`${baseUrl}/trash-master/${location.state?.trashType}/${location.state?.trashCode}`);
+        const req = await axios.delete(`${baseUrl}/trash-master/${location.state?.id}`);
         if(req){
         console.log('REQ', req)
         if(req.status == 200){

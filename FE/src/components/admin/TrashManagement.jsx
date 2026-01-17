@@ -17,7 +17,7 @@ const DataTable = ({data, type}) => {
 
     const rows = data.map((item, key) => {
         return {
-            id: key+1,
+            id: item.id,
             trashCode: item.code,
             trashType: type,
             trashName: item.name,
@@ -79,7 +79,7 @@ const ListTrashFee = () => {
             if (res.data) {
             const temp = res.data.map((item) => {
                 return {
-                    id: item._id,
+                    id: item.id,
                     type: item.type,
                     data: item.data
                 }
@@ -140,7 +140,7 @@ const ListTrashFee = () => {
         >
         {dataset?.map((item, key) => {
             return(
-                <Tab id={key} value={item.type} label={item.type} sx={{ textTransform: 'capitalize'}}/>
+                <Tab id={item.id} value={item.type} label={item.type} sx={{ textTransform: 'capitalize'}}/>
             );
         })}
 

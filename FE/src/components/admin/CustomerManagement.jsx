@@ -42,7 +42,7 @@ export default function CustomerManagementTable() {
       if (res.data) {
         const temp = res.data.map((item) => {
           return {
-            id: item._id,
+            id: item.code,
             code: item.code,
             name: item.name,
             type: item.type,

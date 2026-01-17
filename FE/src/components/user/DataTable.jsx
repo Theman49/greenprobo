@@ -33,7 +33,7 @@ export default function DataTable() {
         console.log("FETCH DATA", res.data)
         const temp = res.data.map((item) => {
           return {
-            id: item._id,
+            id: item.transaction.noFactur,
             facturNo: item.transaction.noFactur,
             transactionDate: format(item.transaction.date, 'dd MMMM yyyy'),
             recipient: item.admin.name,
