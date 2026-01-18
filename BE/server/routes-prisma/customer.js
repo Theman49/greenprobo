@@ -2,9 +2,7 @@ import express from "express";
 
 // This will help us connect to the database
 // import db from "../db/connection.js";
-import { db } from "../db/connection.js";
-import {customers} from '../../drizzle/schema.ts'
-import { eq, desc } from 'drizzle-orm';
+import { prisma } from '../../prisma/lib/prisma.ts'
 
 // This help convert the id from string to ObjectId for the _id.
 import { ObjectId } from "mongodb";
@@ -16,14 +14,18 @@ const router = express.Router();
 
 // This section will help you get a list of all the inventory.
 router.get("/customers", async (req, res) => {
-  let results = await db.select().from(customers);
+  let results = await prisma.customers.findMany();
   res.send(results).status(200);
 });
 
 // This section will help you get a single record by id
 router.get("/customers/:id", async (req, res) => {
-  let query = await db.select().from(customers).where(eq(customers.code, req.params.id));
-  const result = query[0];
+  let result = await prisma.customers.findFirst({
+    where: {
+      code: req.params.id
+    }
+  });
+
   if (!result) res.send("Not found").status(404);
   else res.send(result).status(200);
 });
@@ -31,9 +33,17 @@ router.get("/customers/:id", async (req, res) => {
 // This section will help you create a new record.
 router.post("/customers", async (req, res) => {
   try {
-    const lastData = await db.select().from(customers).orderBy(desc(customers.code)).limit(1);
+    const lastData = await prisma.customers.findFirst({
+      select: {
+        code: true,
+      },
+      orderBy: {
+        code: "desc",
+      },
+    });
 
-    const lastCode = parseInt(lastData[0].code);
+
+    const lastCode = parseInt(lastData.code);
     const newCode = `0${lastCode + 1}`;
     let newDocument = {
       code: newCode,
@@ -45,7 +55,9 @@ router.post("/customers", async (req, res) => {
       username: req.body.username,
       password: req.body.password,
     };
-    let result = await db.insert(customers).values(newDocument);
+    let result = await prisma.customers.create({
+      data: newDocument
+    });
     res.send(result).status(204);
   } catch (err) {
     console.error(err);
@@ -66,7 +78,12 @@ router.patch("/customers/:id", async (req, res) => {
         password: req.body.password,
     };
 
-    let result = await db.update(customers).set(updates).where(eq(customers.code, req.params.id));
+    let result = await prisma.customers.update({
+      where: {
+        code: req.params.id
+      }, 
+      data: updates
+      });
     res.send(result).status(200);
   } catch (err) {
     console.error(err);
@@ -79,7 +96,11 @@ router.patch("/customers/:id", async (req, res) => {
 router.delete("/customers/:id", async (req, res) => {
   try {
 
-    let result = await db.delete(customers).where(eq(customers.code, req.params.id));
+    let result = await prisma.customers.delete({
+      where: {
+        code: req.params.id
+      }
+    });
 
     res.send(result).status(200);
   } catch (err) {

@@ -2,9 +2,7 @@ import express from "express";
 
 // This will help us connect to the database
 // import db from "../db/connection.js";
-import { db } from "../db/connection.js";
-import {admins, customers} from '../../drizzle/schema.ts'
-import { eq } from 'drizzle-orm';
+import { prisma } from '../../prisma/lib/prisma.ts'
 
 // This help convert the id from string to ObjectId for the _id.
 import { ObjectId } from "mongodb";
@@ -22,13 +20,20 @@ router.get('/check', (req, res) => {
 router.post("/auth", async (req, res) => {
     try {
         let collectionName = '';
-        let query = '';
+        let getUser = [];
         if(req.body.type === 'admin'){
-            query = await db.select().from(admins).where(eq(admins.username, req.body.username)).limit(1);
+            getUser = await prisma.admins.findFirst({
+                where: {
+                    username: req.body.username
+                }
+            })
         }else if(req.body.type === 'customer'){
-            query = await db.select().from(customers).where(eq(customers.username, req.body.username)).limit(1);
+            getUser = await prisma.customers.findFirst({
+                where: {
+                    username: req.body.username
+                }
+            })
         }
-        const getUser = query[0];
 
         if(!getUser){
             res.status(200).send({

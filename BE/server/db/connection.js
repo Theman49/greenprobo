@@ -1,26 +1,11 @@
-import { MongoClient, ServerApiVersion } from "mongodb";
+import mysql from "mysql2/promise";
+import { drizzle } from "drizzle-orm/mysql2";
 
-const uri = process.env.MONGO_URI || "";
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
+export const pool = mysql.createPool({
+  host: process.env.DATABASE_HOST,
+  user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE_NAME,
 });
 
-try {
-  // Connect the client to the server
-  await client.connect();
-  // Send a ping to confirm a successful connection
-  await client.db("admin").command({ ping: 1 });
-  console.log(
-   "Pinged your deployment. You successfully connected to MongoDB!"
-  );
-} catch(err) {
-  console.error(err);
-}
-
-let db = client.db("local");
-
-export default db;
+export const db = drizzle(pool);

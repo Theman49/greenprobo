@@ -2,9 +2,7 @@ import express from "express";
 
 // This will help us connect to the database
 // import db from "../db/connection.js";
-import { db } from "../db/connection.js";
-import {trashMaster as trash_master} from '../../drizzle/schema.ts'
-import { eq, sql } from 'drizzle-orm';
+import { prisma } from '../../prisma/lib/prisma.ts'
 
 // This help convert the id from string to ObjectId for the _id.
 import { ObjectId } from "mongodb";
@@ -16,9 +14,14 @@ const router = express.Router();
 
 // This section will help you get a list of all the inventory.
 router.get("/trash-master", async (req, res) => {
-  let query = await db.selectDistinct({type: trash_master.type}).from(trash_master);
+  let query = await prisma.trash_master.findMany({
+    distinct: 'type',
+    select: {
+      type: true,
+    }
+  });
 
-  const data = await db.select().from(trash_master)
+  const data = await prisma.trash_master.findMany()
 
   let results = query.map((item) => {
     return {
@@ -29,27 +32,33 @@ router.get("/trash-master", async (req, res) => {
   res.send(results).status(200);
 });
 
-// // This section will help you get a single record by id
-// router.get("/trash-master/:type", async (req, res) => {
-//   let collection = await db.collection("trashMaster");
-//   let query = { type: req.params.type };
-//   let result = await collection.findOne(query);
+// This section will help you get a single record by id
+router.get("/trash-master/:type", async (req, res) => {
+  let collection = await db.collection("trashMaster");
+  let query = { type: req.params.type };
+  let result = await collection.findOne(query);
 
-//   if (!result) res.send("Not found").status(404);
-//   else res.send(result).status(200);
-// });
+  if (!result) res.send("Not found").status(404);
+  else res.send(result).status(200);
+});
 
 
 
 // This section will help you update a record by id.
 router.patch("/trash-master/:id", async (req, res) => {
   try {
-    let result = await db.update(trash_master).set({
-        type: req.body.type,
-        name: req.body.name,
-        code: req.body.code,
-        fee: parseInt(req.body.fee),
-    }).where(eq(trash_master.id, req.params.id))
+    let result = await prisma.trash_master.update({
+      where: {
+        id: parseInt(req.params.id),
+      },
+      data: {
+            type: req.body.type,
+            name: req.body.name,
+            code: req.body.code,
+            fee: parseInt(req.body.fee),
+
+      }
+    })
     res.send(result).status(200);
 
   } catch (err) {
@@ -61,11 +70,13 @@ router.patch("/trash-master/:id", async (req, res) => {
 // This section will help you create a new record.
 router.post("/trash-master", async (req, res) => {
   try {
-    const newData = await db.insert(trash_master).values({
+    const newData = await prisma.trash_master.create({
+      data: {
         type: req.body.type,
         name: req.body.name,
         code: req.body.code,
         fee: parseInt(req.body.fee),
+      }
     })
     res.send(newData).status(204);
   } catch (err) {
@@ -78,7 +89,11 @@ router.post("/trash-master", async (req, res) => {
 // This section will help you delete a record
 router.delete("/trash-master/:id", async (req, res) => {
   try {
-    let result = await db.delete(trash_master).where(eq(trash_master.id, req.params.id));
+    let result = await prisma.trash_master.delete({
+      where: {
+        id: parseInt(req.params.id)
+      }
+    })
     res.send(result).status(200);
   } catch (err) {
     console.error(err);

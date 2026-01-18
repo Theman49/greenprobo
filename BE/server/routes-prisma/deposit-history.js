@@ -2,10 +2,7 @@ import express from "express";
 
 // This will help us connect to the database
 // import db from "../db/connection.js";
-import { db } from "../db/connection.js";
-import {transactions} from '../../drizzle/schema.ts'
-import { eq, sql } from 'drizzle-orm';
-import { toMysqlDatetime } from "../utils/date.js";
+import { prisma } from '../../prisma/lib/prisma.ts'
 
 // This help convert the id from string to ObjectId for the _id.
 import { ObjectId } from "mongodb";
@@ -16,43 +13,32 @@ import { ObjectId } from "mongodb";
 const router = express.Router();
 
 // This section will help you delete a record by id.
-router.delete("/deposit-histories", async (req, res) => {
+router.delete("/deposit-histories/:id", async (req, res) => {
   try {
-    let find = await db.select().from(transactions).where(eq(transactions.id, req.body.id));
-    let findAdminCode = JSON.parse(find[0].detail).admin.code
+    const filter = { _id: new ObjectId(req.params.id) };
 
-    if(req.body.isAdmin && req.body.code === findAdminCode){
-      let result = await db.delete(transactions).where(eq(transactions.id, req.body.id))
-      res.send(result).status(200);
-    }else{
-      res.status(500).send("Error deleting record deposit history");
-    }
+    let collection = await db.collection("depositHistories");
+    let result = await collection.deleteOne(filter);
+    res.send(result).status(200);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error deleting record deposit history");
+    res.status(500).send("Error deleting record customers");
   }
 });
 
 // This section will help you update a record by id.
 router.patch("/deposit-histories-edit/:id", async (req, res) => {
   try {
+    const filter = { _id: new ObjectId(req.params.id) };
 
-    const detail = JSON.stringify({
-      trash: req.body.payload.trash,
-      customer: req.body.payload.customer,
-      admin: req.body.payload.admin,
-    })
+    let collection = await db.collection("depositHistories");
+    let find = await collection.find(filter).toArray();
+    console.log(find)
+    console.log(req.body)
 
-    const payload = {
-      ...req.body.payload.transaction,
-      detail: detail
-    }
-
-    let find = await db.select().from(transactions).where(eq(transactions.id, req.params.id));
-    let findAdminCode = JSON.parse(find[0].detail).admin.code
-
-    if(req.body.isAdmin && req.body.code === findAdminCode){
-      let result = await db.update(transactions).set(payload).where(eq(transactions.id, req.params.id))
+    if(req.body.isAdmin && req.body.code === find[0].admin.code){
+      let resDelete = await collection.deleteOne(filter);
+      let result = await collection.insertOne(req.body.payload)
       res.send(result).status(200);
     }else{
       res.status(500).send("Error updating record deposit history");
@@ -64,11 +50,9 @@ router.patch("/deposit-histories-edit/:id", async (req, res) => {
   }
 });
 
-
-// This section will help you get detail record.
 router.post("/deposit-histories-detail", async (req, res) => {
   try {
-    const query = await db.select().from(transactions)
+    const query = await prisma.transactions.findMany()
     const data = query.map((item) => {
       return {
         transaction: item, 
@@ -100,7 +84,15 @@ router.post("/deposit-histories-detail", async (req, res) => {
 // This section will help you get record for index.
 router.post("/deposit-histories-index", async (req, res) => {
   try {
-    const query = await db.select().from(transactions)
+    let filter = {
+      "customer.code": req.body.code
+    };
+    if(req.body.isAdmin){
+      filter = {
+        "admin.code": req.body.code,
+      }
+    }
+    const query = await prisma.transactions.findMany()
     const data = query.map((item) => {
       return {
         transaction: item, 
@@ -132,7 +124,7 @@ router.post("/deposit-histories-index", async (req, res) => {
 // This section will help you create a new record.
 router.post("/deposit-histories", async (req, res) => {
   try {
-    // console.log("PAYLOAD", req.body);
+    console.log("PAYLOAD", req.body);
 
     const detail = JSON.stringify({
       trash: req.body.trash,
@@ -144,13 +136,13 @@ router.post("/deposit-histories", async (req, res) => {
       ...req.body.transaction,
       detail: detail
     }
-    const lastData = await db.select().from(transactions).where(
-      sql`
-      ${transactions.type} = ${req.body.transaction.type}
-      and ${transactions.month} = ${req.body.transaction.month}
-      and ${transactions.year} = ${req.body.transaction.year}
-      `
-    );
+    const lastData = await prisma.transactions.findMany({
+      where: {
+        type: req.body.transaction.type,
+        month: req.body.transaction.month,
+        year: req.body.transaction.year,
+      }
+    })
 
     const maxLengthId = 3
     let nextId = 1;
@@ -167,10 +159,11 @@ router.post("/deposit-histories", async (req, res) => {
       genId += `${nextId}/`;
     }
     payload.noFactur = genId + req.body.transaction.noFactur
-    payload.date = toMysqlDatetime(payload.date)
-    console.log('PAYLOAD', payload.date);
+    console.log(payload);
     // const noFactur = req.body.transaction.noFactur;
-    let result = await db.insert(transactions).values(payload);
+    let result = await prisma.transactions.create({
+      data: payload
+    });
     res.send(result).status(204);
     
   } catch (err) {
