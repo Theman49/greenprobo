@@ -307,7 +307,13 @@ export default function ReceiptHistoryDetail() {
     }
 
     const handleDelete = async() => {
-        const res = await axios.delete(`${baseUrl}/deposit-histories/${data._id}`);
+        const res = await axios.delete(`${baseUrl}/deposit-histories/`, {
+            data: {
+                id: data.transaction.id,
+                isAdmin: getSession.isAdmin,
+                code: getSession.code,
+            }
+        });
 
         if(res.status === 200){
             console.log(res)
@@ -369,7 +375,7 @@ export default function ReceiptHistoryDetail() {
         })
         console.log(body)
 
-        const res = await axios.patch(`${baseUrl}/deposit-histories-edit/${data._id}`, {
+        const res = await axios.patch(`${baseUrl}/deposit-histories-edit/${data.transaction.id}`, {
             isAdmin: getSession.isAdmin,
             code: getSession.code,
             payload: body
